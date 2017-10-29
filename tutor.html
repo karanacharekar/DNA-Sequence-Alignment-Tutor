@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<body>
+
+<script src="myController.js"></script>
+
+
+<div id="scoring" ng-app="myAlignmentTutor" ng-controller="scoring">
+<p>Select Scoring Matrix:</p>
+    <ul>
+        <li ng-repeat="matrix in matrices">
+                <input name="score" type="radio" ng-value="matrix.name" ng-model="$parent.selctedVal" ng-change="$parent.selectionChanged()">{{matrix.name}}
+       			<h1 ng-show="matrix.ischecked"> {{matrix.name}}</h1>    	   
+        </li>
+    </ul>
+    <button ng-click="addItem()">butt</button>
+</div>
+
+<h1> An educational web application which helps a layman understand global and local sequence alignment techniques in an interactive and illustrative manner </h1>
+
+</body>
+</html>
