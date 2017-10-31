@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="algorithms.css" media="screen" />
+  <script src="algorithms.js"></script>
+
+</head>
+<body ng-app="myAlignmentTutor" ng-controller="matrix">
+
+<div class="container">
+  <h2>Bordered Table</h2>
+  <p>The .table-bordered class adds borders to a table:</p>            
+ 
+
+ <table  style="min-height: 10px; min-width: 10px  border: 1px solid #ddd ;" >
+  	<tr>
+  		<th></th>
+  		<th>-</th>
+  		<th ng-repeat="x in query">{{x}}</th>
+  	</tr>
+  	<tr><td>-</td>
+  		<td>0</td>
+  		<td ng-repeat="x in query">0</td>
+  	</tr>
+  	<tr ng-repeat="x in db">
+  		
+  		<td>{{x}}</td>
+  		<td>0</td>
+  		<td ng-repeat="x in query" align="center"><input type="number" name="t" size="1" style="border-style: solid;"></td>
+  	</tr>	
+ </table>
+</div>
+
+</body>
+</html>

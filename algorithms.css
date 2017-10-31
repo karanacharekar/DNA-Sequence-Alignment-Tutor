@@ -1,0 +1,25 @@
+th {
+	min-height: 10px; 
+	width: 50px;
+	text-align: center;
+	 padding: 5px;
+}
+
+td {
+	min-height: 10px; 
+	width: 50px;
+	text-align: center;
+	 padding: 5px;
+}
+
+tr {
+	min-height: 10px; 
+	width: 50px;
+	text-align: center;
+	 padding: 5px;
+}
+
+input {
+text-align: center;
+width: 50px;
+}
