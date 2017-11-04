@@ -14,26 +14,97 @@
 </head>
 <body ng-app="myAlignmentTutor" ng-controller="matrix">
 
-<div class="container">
-  <h2>Bordered Table</h2>
-  <p>The .table-bordered class adds borders to a table:</p>            
- 
 
- <table  style="min-height: 10px; min-width: 10px  border: 1px solid #ddd ;" >
+ 	
+
+
+<div class="nav-side-menu"  class="col-sm-4">
+    <div class="brand">Selection</div>
+    <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+        <div class="menu-list">
+            <ul id="menu-content" class="menu-content collapse out">
+                <br>
+                <li  data-toggle="collapse" data-target="#products" class="collapsed ">
+                  <a href="#" style="margin-left: 10px"><i class="fa fa-gift fa-lg"></i> Sequences <span class="arrow"></span></a>
+                </li>
+                <ul class="sub-menu collapse" id="products">
+                	<li>
+                		<div class="form-group">
+						      <label for="usr">Query Sequence 1 :</label>
+						      <input type="text" class="form-control" id="usr">
+			   			 </div>
+			   		</li>
+
+			   		<li>
+                		<div class="form-group">
+						      <label for="usr">Query Sequence 2 :</label>
+						      <input type="text" class="form-control" id="usr">
+			   			 </div>
+			   		</li>		
+                </ul>
+
+
+                <li  data-toggle="collapse" data-target="#product" class="collapsed">
+                  <a href="#" style="margin-left: 10px"><i class="fa fa-gift fa-lg"></i> Alignment Type <span class="arrow"></span></a>
+                </li>
+                <ul class="sub-menu collapse" id="product">
+                    <li><input type="radio" name="alignment"> Local Alignment </li>
+                    <li><input type="radio" name="alignment"> Global Alignment </li>  
+                    <li><input type="radio" name="alignment"> Dovetail Alignment </li>      
+                </ul>
+
+
+                <li data-toggle="collapse" data-target="#service" class="collapsed">
+                  <a href="#" style="margin-left: 10px"><i class="fa fa-globe fa-lg"></i> Scoring Matrices <span class="arrow"></span></a>
+                </li>  
+                <ul class="sub-menu collapse" id="service">
+                  	<li><input type="radio" name="scorematrix"> PAM250 </li>
+                    <li><input type="radio" name="scorematrix"> PAM10 </li> 
+                    <li><input type="radio" name="scorematrix"> BLOSSUM </li>
+                </ul>
+
+
+                <li data-toggle="collapse" data-target="#new" class="collapsed">
+                  <a href="#" style="margin-left: 10px" ><i class="fa fa-car fa-lg"></i> Gap Penalty <span class="arrow"></span></a>
+                </li>
+                <ul class="sub-menu collapse" id="new">
+                  <li>
+                  	<div class="form-group" >
+						      <input style="" type="number" class="form-control" id="usr">
+			   		</div>
+                  </li>
+                </ul>
+
+
+                 
+            </ul>
+            <br>
+     </div>
+     <button  type="button" class="btn btn-primary btn-block"> Start </button>
+</div>
+
+"
+
+<div class="container"  class="col-sm-8" align="center">
+  <h2 align= "center">Bordered Table</h2>
+ <table  align= "center" style="min-height: 10px; min-width: 10px  border: 1px solid #ddd ;" >
   	<tr>
   		<th></th>
   		<th>-</th>
   		<th ng-repeat="x in query">{{x}}</th>
   	</tr>
-  	<tr><td>-</td>
-  		<td>0</td>
-  		<td ng-repeat="x in query">0</td>
+  	<tr>
+  		<td>-</td>
+  		<td>  <input type="number" name="t" size="1" value="0" style="border-style: solid;" readonly=""> </td>
+  		<td ng-repeat="x in query"> <input type="number" col="{{db.indexOf(element)}}" row="{{$index}}" style="border-style: solid;"   > 0,{{$index+1}}</td>
   	</tr>
-  	<tr ng-repeat="x in db">
-  		
-  		<td>{{x}}</td>
-  		<td>0</td>
-  		<td ng-repeat="x in query" align="center"><input type="number" name="t" size="1" style="border-style: solid;"></td>
+  	<tr ng-repeat="d in db">
+  		<td>{{d}}</td>
+  		<td> <input type="number" name="t" size="1"  style="border-style: solid;" >{{$index+1}},0 </td>
+  		<td ng-repeat="x in query" align="center">
+  			<input col="{{db.indexOf(d)}}" row="{{$index}}" type="number" name="t" size="1" style="border-style: solid;" ng-change="valCheck(row,col,myVal)"  ng-model="myVal" >
+  			{{db.indexOf(d)+1}},{{$index+1}}
+  		</td>
   	</tr>	
  </table>
 </div>
