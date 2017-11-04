@@ -7,3 +7,15 @@
 
 
 }
+/* unvisited link */
+a:link {
+    color: blue;
+    text-decoration: none;
+}
+
+/* mouse over link */
+a:hover {
+    color: red;
+    text-decoration: none;
+}
+
