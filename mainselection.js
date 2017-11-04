@@ -1,23 +1,26 @@
-var app = angular.module("myAlignmentTutor", []); 
-app.controller("mainselection", function($scope) {
-
-	$scope.go = function ( path ) {
-  $location.path( path );
-};
-});
-
+var app = angular.module("myAlignmentTutor", ["ngRoute"]); 
 
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
-        templateUrl : "main.htm"
+        templateUrl : "mainpage.html"
     })
-    .when("/algorithm", {
-        templateUrl : "algorithm.htm"
+    .when("/algorithms", {
+        templateUrl : "algorithms.html"
     })
-    .when("/tutorial", {
-        templateUrl : "tutorial.htm"
+    .when("/tutorials", {
+        templateUrl : "tutorialpage.html"
     })
     
 });
+
+app.controller("mainselection", function($scope,$location) {
+
+	$scope.go = function ( path ) {
+  $location.path( path );
+  console.log(path);
+};
+});
+
+
 

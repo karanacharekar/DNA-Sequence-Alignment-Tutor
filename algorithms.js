@@ -20,4 +20,9 @@ app.controller("matrix", function($scope) {
         "u",
         "i"
     ]
+
+    $scope.myFunction = function (x) {
+        alert("Row index is: " + x.rowIndex);
+    } 
+
 });
