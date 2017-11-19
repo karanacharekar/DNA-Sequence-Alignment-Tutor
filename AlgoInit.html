@@ -78,29 +78,30 @@
                 <button id="add" type="button" ng-click='add()' style="border:none;" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add New</button>
         </div>
 
+        <div ng-show="instatus" class="form-group alert alert-success alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close" ng-click="closeAlert()">&times;</a><span id="status">{{inmessage}}</span></div>
+
         <div ng-repeat='item in items' ng-init="oindex=$index">
             <div ng-model='item' class='input-{{oindex}}' id='item-{{oindex}}'>
             <ng-form name="innerform">
-            <div class="form-group" ng-class="{'has-error': innerform.matname.$invalid}">
+            <div class="form-group">
                 <label class="control-label" for="matname"><b>Substitution Matrix Name</b><span class="req"> *</span></label>
                 <div class="controls">
                 <input name="matname" ng-model="parentObj.matname" type="text" class="form-control k-textbox" data-role="text" ng-required="true"><span id="errId2" class="error"></span>
                 </div>
             </div>
-            <div class="form-group" >
-            <table class="table-responsive col-xs-{{rownum.length}}">
-                <tr ng-repeat="i in rownum" ng-init="rindex=$index">
-                    <td ng-repeat="j in colnum" ng-init="cindex=$index" ng-class="{'has-error': innerform.cell{{rindex}}{{$index}}.$invalid}"><input type="number" name="cell{{rindex}}{{$index}}" ng-model="parentObj.matrixadd[rindex][$index]" class="form-control 1-textbox" size="1" required></td>
-                </tr>
-                <tr>
-                    <td colspan='{{rownum.length}}'>
-                        <div class="form-group group-inline btn-group">
-                        <button id="add" type="button" ng-click='insert(innerform.$valid , oindex)' style="border:none;margin-right:10px;" class="btn btn-primary" ng-disabled="innerform.$invalid"><span class="glyphicon glyphicon-floppy-disk"></span> Insert Matrix </button>
+            <div class="form-group">
+                <label class="control-label" for="match"><b>Match</b><span class="req"> *</span></label>
+                <div class="controls">
+                <input name="match" ng-model="parentObj.match" type="number" class="form-control k-textbox" ng-required="true"><span id="errId2" class="error"></span>
+                </div>
+                <label class="control-label" for="mismatch"><b>Mismatch</b><span class="req"> *</span></label>
+                <div class="controls">
+                <input name="mismatch" ng-model="parentObj.mismatch" type="number" class="form-control k-textbox" ng-required="true"><span id="errId2" class="error"></span>
+                </div>
+            </div>
+            <div class="form-group group-inline btn-group">
+                        <button id="add" type="button" ng-click='insert(oindex)' style="border:none;margin-right:10px;" class="btn btn-primary" ng-disabled="innerform.$invalid"><span class="glyphicon glyphicon-floppy-disk"></span> Insert Matrix </button>
                         <button id="add" type="button" ng-click='del(oindex)' style="border:none;margin-right:10px;" class="btn btn-primary"><span class="glyphicon glyphicon-remove"></span> Cancel </button>
-                        </div>
-                    </td>
-                </tr>
-            </table>
             </div>
             </ng-form>
             </div> 
