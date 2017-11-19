@@ -1,0 +1,130 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="http://cdn.kendostatic.com/2014.1.318/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="http://cdn.kendostatic.com/2014.1.318/styles/kendo.bootstrap.min.css" rel="stylesheet" />
+    <link href="http://protostrap.com/Assets/gv/css/gv.bootstrap-form.css" rel="stylesheet" type="text/css" />
+
+        
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<body style="background: white" ng-app="initapp">
+    
+    <div class="container-fluid" ng-controller = "initctrl">
+        <div class="row">
+
+            <form name="myform" class="form-horizontal" role="form"  novalidate>
+                <div class="container-fluid shadow">
+                    <div class="row">
+                        <div id="valErr" class="row viewerror clearfix hidden">
+                            <div class="alert alert-danger">Oops! Seems there are some errors..</div>
+                        </div>
+                        <div id="valOk" class="row viewerror clearfix hidden">
+                            <div class="alert alert-success">Yay! ..</div>
+                        </div>
+
+                        
+                                    <div class="row">
+                                        <div class="col-md-12"><div class="form-group brdbot">
+			    <h2><b>Alignment Parameters</b></h2>
+			    <div class="controls col-sm-9">
+                    
+                <p id="field9" data-default-label="Header" data-default-is-header="true" data-control-type="header"></p><span id="errId1" class="error"></span></div>
+                
+		</div><div class="form-group">
+			    <label class="control-label" for="field1"><b>Sequence 1</b><span class="req"> *</span></label>
+			    <div class="controls">
+                    
+                <input name="seq1" type="text" maxlength="15" ng-model="seq1" class="form-control k-textbox" data-role="text" required><span id="errId2" class="error"></span></div>
+                
+		</div><div class="form-group">
+			    <label class="control-label" for="field2"><b>Sequence 2</b><span class="req"> *</span></label>
+			    <div class="controls">
+                    
+                <input name="seq2" type="text" maxlength="15" ng-model="seq2" class="form-control k-textbox" data-role="text" required><span id="errId3" class="error"></span></div>
+                
+		</div><div class="form-group">
+			    <label class="control-label"><b>Alignment Method</b><span class="req"> *</span></label>
+			    <div class="controls">
+                    
+                <label class="radio" for="radio5"><input type="radio" value="global" name="align" ng-model="alignmethod" required="required" checked="true">Global</label><label class="radio" for="radio6"><input type="radio" value="local" name="align" ng-model="alignmethod" required="required">Local</label><label class="radio" for="radio7"><input type="radio" value="dovetail" name="align" ng-model="alignmethod" required="required">Dovetail</label><span id="errId4" class="error"></span></div>
+                
+		</div><div class="form-group">
+			    <label class="control-label" for="field8"><b>Scoring Matrix</b><span class="req"> *</span></label>
+			    <div id="scorem" class="controls">
+                <label class="radio" for="nuc"><input type="radio" ng-model="matrixtype" value="Nucleotides"  name="score" required="required" checked="true">Nucleotides</label><label class="radio" for="ama"><input type="radio" ng-model="matrixtype" value="AminoAcids"  name="score" required="required">Amino Acids</label><span id="errId4" class="error"></span></div>
+
+		</div>
+
+        <div class="form-group">
+        <div class="controls">
+            <select name="matrixlist" class="form-control" ng-model="selmatrix" required>
+                <option value=""></option>  
+                <option ng-repeat="x in matrix">{{x}}</option>
+            </select>
+        </div>
+
+         <div class="form-group group-inline btn-group">
+                <button id="add" type="button" ng-click='add()' style="border:none;" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add New</button>
+        </div>
+
+        <div ng-repeat='item in items' ng-init="oindex=$index">
+            <div ng-model='item' class='input-{{oindex}}' id='item-{{oindex}}'>
+            <ng-form name="innerform">
+            <div class="form-group" ng-class="{'has-error': innerform.matname.$invalid}">
+                <label class="control-label" for="matname"><b>Substitution Matrix Name</b><span class="req"> *</span></label>
+                <div class="controls">
+                <input name="matname" ng-model="parentObj.matname" type="text" class="form-control k-textbox" data-role="text" ng-required="true"><span id="errId2" class="error"></span>
+                </div>
+            </div>
+            <div class="form-group" >
+            <table class="table-responsive col-xs-{{rownum.length}}">
+                <tr ng-repeat="i in rownum" ng-init="rindex=$index">
+                    <td ng-repeat="j in colnum" ng-init="cindex=$index" ng-class="{'has-error': innerform.cell{{rindex}}{{$index}}.$invalid}"><input type="number" name="cell{{rindex}}{{$index}}" ng-model="parentObj.matrixadd[rindex][$index]" class="form-control 1-textbox" size="1" required></td>
+                </tr>
+                <tr>
+                    <td colspan='{{rownum.length}}'>
+                        <div class="form-group group-inline btn-group">
+                        <button id="add" type="button" ng-click='insert(innerform.$valid , oindex)' style="border:none;margin-right:10px;" class="btn btn-primary" ng-disabled="innerform.$invalid"><span class="glyphicon glyphicon-floppy-disk"></span> Insert Matrix </button>
+                        <button id="add" type="button" ng-click='del(oindex)' style="border:none;margin-right:10px;" class="btn btn-primary"><span class="glyphicon glyphicon-remove"></span> Cancel </button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            </div>
+            </ng-form>
+            </div> 
+        </div>
+                
+		</div><div class="form-group">
+			    <label class="control-label" for="field15"><b>Gap Penalty</b><span class="req"> *</span></label>
+			    <div class="controls">
+                    
+                <input name="gap" type="number" class="form-control k-textbox" ng-model="gap" data-role="text" required><span id="errId6" class="error"></span></div>
+                
+		</div><div class="form-group group-inline btn-group">
+		      <button name="submit" type="button" class="btn btn-primary" ng-disabled="myform.$invalid"><span class="glyphicon glyphicon-play-circle"></span> Initialize</button>
+          </div></div>
+                                    </div>
+                                
+
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+<script src="AlgoInit.js"></script>
+</body>
+</html>
