@@ -2,7 +2,7 @@ var app = angular.module("myAlignmentTutor", []);
 app.controller("scoring", function($scope) {
     $scope.matrices = [{name: "Manual", id:1, ischecked:false}, {name: "Blossom5", id:2, ischecked:false}, {name: "Pam10", id:3, ischecked:false}];
     //$scope.selctedVal = "Manual";
-    $scope.print = "None";
+    
     	
    	//$scope.$watch('selctedVal',function(newValue, oldValue, scope){
    	//	scope.setVal(val);
