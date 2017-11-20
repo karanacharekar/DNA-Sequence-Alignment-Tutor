@@ -10,10 +10,6 @@ var users = require('./routes/users');
 
 var app = express();
 
-
-
-
-
 module.exports = app;
 
 
@@ -22,7 +18,6 @@ module.exports = app;
     // configuration =================
 
     mongoose.connect('mongodb://localhost:27017/align_tutor');     // connect to mongoDB database on modulus.io
-
     app.use(express.static(__dirname + '/public'));                 // set the static files location /public/img will be /img for users
     //app.use(morgan('dev'));                                         // log every request to the console
     app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
@@ -43,52 +38,61 @@ module.exports = app;
     });
 
 
+    var UserQuery = mongoose.model('userqueries', {
+        sequence1 : String,
+        sequence2 : String,
+        alignment : String,
+        scorematrix : String,
+        gap : Number
+    });
+
+
+
     // routes ======================================================================
 
     // api ---------------------------------------------------------------------
-    // get all todos
+
     app.get('/api/ScoringMatrix', function(req, res) {
     	
-    	var name = req.query.name
-
-        // use mongoose to get all todos in the database
-        ScoringMatrix.findOne({'name':name},'name chars matrix',function(err, todos) {
+    	var names = req.query.name
+        console.log(names)
+        // use mongoose to get matrix using its name
+        ScoringMatrix.findOne({ "name" : "TEMP" },'name chars matrix',function(err, todos) {
 
             // if there is an error retrieving, send the error. nothing after res.send(err) will execute
             if (err)
                 res.send(err)
 
             console.log(todos)
-            res.json(todos); // return all todos in JSON format
-            res.send(200);
+            res.json(todos); 
+            //res.send(200);
         });
-       
-
-
     });
 
-    // create todo and send back all todos after creation
-    app.post('/api/ScoringMatrix', function(req, res) {
 
-        // create a todo, information comes from AJAX request from Angular
-        Todo.create({
-            name : req.body.name,
-            chars : req.body.chars,
-            score : req.body.score,
-            done : false
-        }, function(err, todo) {
+    app.get('/api/GetUserQuery', function(req, res) {
+        UserQuery.findOne({}, {}, { sort: { 'created_at' : -1 } },function(err, queryparams) {
+
+            // if there is an error retrieving, send the error. nothing after res.send(err) will execute
             if (err)
-                res.send(err);
+                res.send(err)
 
-            // get and return all the todos after you create another
-            Todo.find(function(err, todos) {
-                if (err)
-                    res.send(err)
-                res.json(todos);
-            });
+            console.log(queryparams)
+            res.json(queryparams); 
+            //res.send(200);
         });
+    });    
 
-    });
+
+
+    app.post('/api/PutUserQuery', function(req, res) {
+        db.collection('userqueries').insert(req.body, function (err, result) {
+          if (err)
+             res.send('Error');
+          else
+            res.send('Success');
+        });
+    });    
 
 
 // catch 404 and forward to error handler
