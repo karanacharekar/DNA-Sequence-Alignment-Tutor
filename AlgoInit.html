@@ -68,9 +68,9 @@
 
         <div class="form-group">
         <div class="controls">
-            <select name="matrixlist" class="form-control" ng-model="selmatrix" required>
+            <select name="matrixlist" class="form-control" ng-model="matrixname" required>
                 <option value=""></option>  
-                <option ng-repeat="x in matrix">{{x}}</option>
+                <option ng-repeat="x in selmatrix">{{x}}</option>
             </select>
         </div>
 
@@ -114,7 +114,7 @@
                 <input name="gap" type="number" class="form-control k-textbox" ng-model="gap" data-role="text" required><span id="errId6" class="error"></span></div>
                 
 		</div><div class="form-group group-inline btn-group">
-		      <button name="submit" type="button" class="btn btn-primary" ng-disabled="myform.$invalid"><span class="glyphicon glyphicon-play-circle"></span> Initialize</button>
+		      <button name="submit" type="button" class="btn btn-primary" ng-click= "initialize()" ng-disabled="myform.$invalid"><span class="glyphicon glyphicon-play-circle"></span> Initialize</button>
           </div></div>
                                     </div>
                                 
