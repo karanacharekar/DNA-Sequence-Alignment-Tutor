@@ -14,63 +14,64 @@
 </head>
 <body ng-app="myAlignmentTutor" ng-controller="matrix">
 
-
- 	
-
-
-<div class="nav-side-menu"  class="col-sm-4">
-    <div class="brand">Selection</div>
+<div class="nav-side-menu"  >
+    <div class="brand">Configuration</div>
     <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
         <div class="menu-list">
             <ul id="menu-content" class="menu-content collapse out">
                 <br>
-                <li  data-toggle="collapse" data-target="#products" class="collapsed ">
-                  <a href="#" style="margin-left: 10px"><i class="fa fa-gift fa-lg"></i> Sequences <span class="arrow"></span></a>
+                <li   data-target="#products" >
+                  <a href="#" style="margin-left: 10px"><i class="fa fa-gift fa-lg"></i> SEQUENCES <span class="arrow"></span></a>
                 </li>
-                <ul class="sub-menu collapse" id="products">
+                <ul  id="products">
                 	<li>
                 		<div class="form-group">
-						      <label for="usr">Query Sequence 1 :</label>
-						      <input type="text" class="form-control" id="usr">
+						      <h6 for="usr" style="margin-left: 10px;">Query Sequence 1 :</h6>
+						      <h6 ng-bind="seq1" style="margin-left: 10px; color: red"></h6>
 			   			 </div>
 			   		</li>
 
 			   		<li>
                 		<div class="form-group">
-						      <label for="usr">Query Sequence 2 :</label>
-						      <input type="text" class="form-control" id="usr">
+						      <h6 for="usr" style="margin-left: 10px;">Query Sequence 2 :</h6>
+						      <h6 ng-bind="seq2" style="margin-left: 10px; color: red"></h6>
 			   			 </div>
 			   		</li>		
                 </ul>
 
 
-                <li  data-toggle="collapse" data-target="#product" class="collapsed">
-                  <a href="#" style="margin-left: 10px"><i class="fa fa-gift fa-lg"></i> Alignment Type <span class="arrow"></span></a>
+                <li   data-target="#product" >
+                  <a href="#" style="margin-left: 10px"><i class="fa fa-gift fa-lg"></i> ALIGNMENT TYPE <span class="arrow"></span></a>
                 </li>
-                <ul class="sub-menu collapse" id="product">
-                    <li><input type="radio" name="alignment"> Local Alignment </li>
-                    <li><input type="radio" name="alignment"> Global Alignment </li>  
-                    <li><input type="radio" name="alignment"> Dovetail Alignment </li>      
+                <ul  id="product">
+                   <li>
+                		<div class="form-group">
+						      <h6 ng-bind="aligntype" style="margin-left: 10px; color: red"></h6>
+			   			 </div>
+			   		</li>
+                     
                 </ul>
 
 
-                <li data-toggle="collapse" data-target="#service" class="collapsed">
-                  <a href="#" style="margin-left: 10px"><i class="fa fa-globe fa-lg"></i> Scoring Matrices <span class="arrow"></span></a>
+                <li  data-target="#service" >
+                  <a href="#" style="margin-left: 10px"><i class="fa fa-globe fa-lg"></i> SCORING MATRIX <span class="arrow"></span></a>
                 </li>  
-                <ul class="sub-menu collapse" id="service">
-                  	<li><input type="radio" name="scorematrix"> PAM250 </li>
-                    <li><input type="radio" name="scorematrix"> PAM10 </li> 
-                    <li><input type="radio" name="scorematrix"> BLOSSUM </li>
+                <ul  id="service">
+                  	<li>
+                		<div class="form-group">
+						      <h6 ng-bind="scoringmatrix" style="margin-left: 10px; color: red"></h6>
+			   			 </div>
+			   		</li>
                 </ul>
 
 
                 <li data-toggle="collapse" data-target="#new" class="collapsed">
-                  <a href="#" style="margin-left: 10px" ><i class="fa fa-car fa-lg"></i> Gap Penalty <span class="arrow"></span></a>
+                  <a href="#" style="margin-left: 10px" ><i class="fa fa-car fa-lg"></i> GAP PENALTY <span class="arrow"></span></a>
                 </li>
-                <ul class="sub-menu collapse" id="new">
+                <ul  id="new">
                   <li>
                   	<div class="form-group" >
-						      <input style="" type="number" class="form-control" id="usr">
+						      <h6 ng-bind="gappen" style="margin-left: 10px; color: red"></h6>
 			   		</div>
                   </li>
                 </ul>
@@ -80,34 +81,76 @@
             </ul>
             <br>
      </div>
-     <button  type="button" class="btn btn-primary btn-block"> Start </button>
+   
 </div>
 
-"
 
-<div class="container"  class="col-sm-8" align="center">
-  <h2 align= "center">Bordered Table</h2>
+
+<div   align="center"  style="width: calc(100% - 280px); float: right;">
+  <h2 align= "center">Dynamic Table</h2>
+  <br>
  <table  align= "center" style="min-height: 10px; min-width: 10px  border: 1px solid #ddd ;" >
   	<tr>
   		<th></th>
   		<th>-</th>
-  		<th ng-repeat="x in query">{{x}}</th>
+  		<th ng-repeat="x in query">{{x.text}}</th>
   	</tr>
+
   	<tr>
   		<td>-</td>
-  		<td>  <input type="number" name="t" size="1" value="0" style="border-style: solid;" readonly=""> </td>
-  		<td ng-repeat="x in query"> <input type="number" col="{{db.indexOf(element)}}" row="{{$index}}" style="border-style: solid;"   > 0,{{$index+1}}</td>
+  		<td>  <input type="number" name="t" size="1" value="0" style="border-style: solid;" readonly="" align="center"> </td>
+  		<td ng-repeat="x in query"> 
+  			<input type="number" col="{{db.indexOf(d)+1}}" row="0" style=" border-style: solid;" id="we" ng-model="myVal" ng-change="valCheck(0,col,myVal,"ids")"> 
+  		</td>
   	</tr>
+
   	<tr ng-repeat="d in db">
   		<td>{{d}}</td>
-  		<td> <input type="number" name="t" size="1"  style="border-style: solid;" >{{$index+1}},0 </td>
+  		<td> <input type="number" name="t" size="1" col="0" row="{{$index+1}}" style="border-style: solid;"> </td>
   		<td ng-repeat="x in query" align="center">
-  			<input col="{{db.indexOf(d)}}" row="{{$index}}" type="number" name="t" size="1" style="border-style: solid;" ng-change="valCheck(row,col,myVal)"  ng-model="myVal" >
-  			{{db.indexOf(d)+1}},{{$index+1}}
+  			<input col="{{db.indexOf(d)+1}}" row="{{$index+1}}" type="number" id="we" style="border-style: solid;" ng-change="valCheck(row,col,myVal,id)"  ng-model="myVal"> 
   		</td>
   	</tr>	
  </table>
+<br>
+<br>
+<br>
+<div>
+	<h4 align="center"> {{scoringmatrix}} </h4>
+	<br>
+
+	<table  align= "center" style="min-height: 10px; min-width: 10px  border: 1px solid #ddd; border: 1px solid black;" >
+	  	<tr>
+	  		<th></th>	
+	  		<th ng-repeat="x in matrixchar">{{x}}</th>
+	  	</tr>
+
+	  	<tr>
+	  		<td> {{matrixchar[0]}}</td>
+	  		<td ng-repeat="x in matrixvals[0]"> 
+	  			<lable>{{x}}</lable>
+	  		</td>
+	  	</tr>
+
+	  	<tr ng-repeat="d in matrixchar.slice(1,matrixvals.length)">
+	  		<td>{{d}}</td>
+	  		<td ng-repeat="x in matrixvals[$index]" align="center">
+	  			<label>{{x}}</label> 
+	  		</td>
+	  	</tr>	
+ 	</table>
+<br>
+<br>
 </div>
+
+
+
+
+
+
+</div>
+
+
 
 </body>
 </html>
