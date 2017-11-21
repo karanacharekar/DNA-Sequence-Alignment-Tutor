@@ -1,29 +1,66 @@
-const http = require('http');
+var express        =        require("express");
+var bodyParser     =        require("body-parser");
+var app            =        express();
 
-const server = http.createServer();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-server.on('request', (request, response) => {
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
-	console.log('successfully called!');
-  
-  const body = "";
 
-  request.on('data', (chunk) => {
-  	body += chunk.toString();
-  })
+app.listen(3000,function(){
+  console.log("Started on PORT 3000");
+})
 
-	console.log(body) ; 
-  /*request.on('end', () => {
-  	body = JSON.parse(body);  
-  });
+var alignObj = null;
 
-  request.on('error', (err) => {
-  	console.error(err.stack);
-  });
+app.post('/api/executeAlignment',function(req,res){
+  //execute alignment method
+	var alignObj = null;
 
-  console.log(body);*/
+	var seq1 = req.body.sequence1;
+	var seq2 = req.body.sequence2;
+	var alignment = req.body.alignment;
+	var submatrix = req.body.scorematrix;
+	var gap = req.body.gap;
 
-}).listen(3000);
+  switch(req.body.alignment){
 
-console.log('Server running at http://127.0.0.1:3000/');
+  	case 'global':
+  		alignObj = globalAlignment(seq1,seq2,alignment,scorematrix,gap);
+  		break;
+
+  	case 'local':
+  		alignObj = localAlignment(seq1,seq2,alignment,scorematrix,gap);
+  		break;
+
+  	case 'dovetail':
+  		alignObj = dovetailAlignment(seq1,seq2,alignment,scorematrix,gap);
+  		break;
+
+  }
+  	
+  	res.header("Content-Type","application/json");
+  	res.send(alignObj);
+});
+
+function global(seq1,seq2,alignment,scorematrix,gap){
+
+}
+
+function global(seq1,seq2,alignment,scorematrix,gap){
+
+}
+
+function global(seq1,seq2,alignment,scorematrix,gap){
+
+}
+
+
+
+
 
