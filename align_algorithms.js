@@ -84,8 +84,83 @@
 		backtrack.push(temp)
 		}
 
-		var return_res = [score_mat,backtrack]
+		var return_res = [score_mat,backtrack,aligned_query,aligned_db]
 		return return_res;
 }
 
       
+	function local(query_seq,db_seq,matrix,alpha,gap_penalty){
+
+
+		console.log("insd global")
+		alpha = alpha.toUpperCase();
+
+		console.log(query_seq)
+		console.log(db_seq)
+
+		var row_len = query_seq.length+1
+		var col_len = db_seq.length+1
+		var score_mat = new Array(row_len).fill(null).map(()=>new Array(col_len).fill(null));
+		console.log(score_mat)
+		var i=0;
+		score_mat[0][0]=0;
+			
+		for(var j=1;j<=db_seq.length;j++) {
+			score_mat[i][j] = 0; 
+		}
+		
+		
+		var j=0;
+		for(i=1;i<=query_seq.length;i++) {
+			score_mat[i][j] = 0; 
+		}
+		
+		
+		
+		for(i = 1;i<=query_seq.length+1;i++) {
+			for(j = 1;j<=db_seq.length+1;j++) {
+				var query_char = (query_seq.charAt(i-1)).toUpperCase();
+				var db_char = (db_seq.charAt(j-1)).toUpperCase();
+				var val = matrix[alpha.indexOf(query_char)][alpha.indexOf(db_char)];
+				score_mat[i][j]= Math.max(0,Math.max(Math.max(score_mat[i][j-1] + gap_penalty,score_mat[i-1][j]+gap_penalty),score_mat[i-1][j-1] + val));
+				if(score_mat[i][j] > fin_score) {
+					fin_score = score_mat[i][j];
+					fin_score_row = i;
+					fin_score_col = j;
+				}	
+			}
+		}
+		
+		
+		var aligned_query = "";
+		var aligned_db = "";
+		i =  fin_score_row;
+		j =  fin_score_col;
+		
+		
+		while(score_mat[i][j]!=0) {
+			
+			var query_char = (query_seq.charAt(i-1)).toUpperCase();
+			var db_char = (db_seq.charAt(j-1)).toUpperCase();
+			var val = matrix[alpha.indexOf(query_char)][alpha.indexOf(db_char)];
+			
+			if(score_mat[i][j] == (score_mat[i-1][j-1] + val)) {
+				aligned_query = query_seq.charAt(i-1) + aligned_query;
+				aligned_db = db_seq.charAt(j-1) + aligned_db;
+				i--;
+				j--;
+			}
+			
+			else if (score_mat[i][j] == (score_mat[i-1][j] + gap_penalty) &&  score_mat[i][j]!=0) {
+				aligned_query = query_seq.charAt(i-1) + aligned_query;
+				aligned_db = "-" + aligned_db;
+				i--;
+			}
+			else if (score_mat[i][j] == (score_mat[i][j-1] + gap_penalty) &&  score_mat[i][j]!=0) {
+				aligned_query = "-" + aligned_query;
+				aligned_db = db_seq.charAt(j-1) + aligned_db;
+				j--;
+			}
+			}
+				
+	}
