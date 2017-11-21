@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Bootstrap Example</title>
   <meta charset="utf-8">
@@ -8,10 +9,12 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="algorithms.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="algorithms.css" media="screen"/>
+  <script src="align_algorithms.js"></script>
   <script src="algorithms.js"></script>
-
+  
 </head>
+
 <body ng-app="myAlignmentTutor" ng-controller="matrix">
 
 <div class="nav-side-menu"  >
@@ -89,52 +92,77 @@
 <div   align="center"  style="width: calc(100% - 280px); float: right;">
   <h2 align= "center">Dynamic Table</h2>
   <br>
+  <h4> Please fill the first row and column first </h4>
+  <h4> Please fill the matrix in the same order as shown in the tutorials</h4>
+  <br>
  <table  align= "center" style="min-height: 10px; min-width: 10px  border: 1px solid #ddd ;" >
   	<tr>
   		<th></th>
   		<th>-</th>
-  		<th ng-repeat="x in query">{{x.text}}</th>
+  		<th ng-repeat="x in query track by $index">{{x}}</th>
   	</tr>
 
   	<tr>
   		<td>-</td>
   		<td>  <input type="number" name="t" size="1" value="0" style="border-style: solid;" readonly="" align="center"> </td>
-  		<td ng-repeat="x in query"> 
-  			<input type="number" col="{{db.indexOf(d)+1}}" row="0" style=" border-style: solid;" id="we" ng-model="myVal" ng-change="valCheck(0,col,myVal,"ids")"> 
+  		<td ng-repeat="x in query track by $index"> 
+  			<input type="number"  style=" border-style: solid; background-color: red" ng-attr-id="{{ '0' + ($index+1).toString()}}" ng-model="myVal" ng-change="MainDpChecker($index+1,0,myVal,'0'+($index+1).toString())"> 
   		</td>
   	</tr>
 
-  	<tr ng-repeat="d in db">
-  		<td>{{d}}</td>
-  		<td> <input type="number" name="t" size="1" col="0" row="{{$index+1}}" style="border-style: solid;"> </td>
-  		<td ng-repeat="x in query" align="center">
-  			<input col="{{db.indexOf(d)+1}}" row="{{$index+1}}" type="number" id="we" style="border-style: solid;" ng-change="valCheck(row,col,myVal,id)"  ng-model="myVal"> 
+  	<tr ng-repeat="d in db track by $index">
+  		<td><b>{{d}}</b></td>
+  		<td> <input type="number" style="border-style: solid; background-color: red;" ng-attr-id="{{($index+1).toString() +'0'}}" ng-change="MainDpChecker(0,$index+1,myVals,($index+1).toString()+'0')" ng-model="myVals"> </td>
+  		<td ng-repeat="x in query track by $index" align="center">
+  			<input  type="number" id="we" style="border-style: solid; background-color: red" ng-change= "MainDpChecker($index+1,$parent.$index+1,myVal,($parent.$index+1).toString()+($index+1).toString())"  ng-model="myVal"> 
   		</td>
   	</tr>	
  </table>
 <br>
 <br>
-<br>
+
 <div>
-	<h4 align="center"> {{scoringmatrix}} </h4>
+
+	<h4 id= "hint1" style="display: none;"> hint 1 : Try Again </h4>
+	<h4 id= "hint2" style="display: none;"> hint 2 : Max( Horizontally left + Gap penalty, Vertically Top + Gap penalty,  Diagonally previous + value from Scoring Matrix)</h4>
+
+	<br>
+	<div ng-show = "disablebacktrack">
+	<h2 align="center"> BACK - TRACK </h2>
+	<br>
+	<h4> Please fill the values from right to left </h4>
+	
+	<br>
+	<table align= "center" style="min-height: 10px; min-width: 10px  border: 1px solid #ddd; border: 1px solid black;"  >
+		<tr>
+			<td ng-repeat="x in scoringmatrix track by $index"> <input type="number" style="border-style: solid;" align="center" ng-change="ValBacktrackChecker($index,myVal)" ng-model="myVal"> </td>
+		</tr>	
+	</table>
+	</div>
+
+	<br>
+	<br>	
+	<h2 align="center"> {{scoringmatrix}} </h2>
+	<br>
+
 	<br>
 
 	<table  align= "center" style="min-height: 10px; min-width: 10px  border: 1px solid #ddd; border: 1px solid black;" >
 	  	<tr>
 	  		<th></th>	
-	  		<th ng-repeat="x in matrixchar">{{x}}</th>
+	  		<th ng-repeat="x in matrixchar track by $index">{{x}}</th>
 	  	</tr>
 
 	  	<tr>
 	  		<td> {{matrixchar[0]}}</td>
-	  		<td ng-repeat="x in matrixvals[0]"> 
+	  		<td ng-repeat="x in matrixvals[0] track by $index"> 
 	  			<lable>{{x}}</lable>
 	  		</td>
 	  	</tr>
 
 	  	<tr ng-repeat="d in matrixchar.slice(1,matrixvals.length)">
 	  		<td>{{d}}</td>
-	  		<td ng-repeat="x in matrixvals[$index]" align="center">
+	  		<td ng-repeat="x in matrixvals[$index] track by $index" align="center">
 	  			<label>{{x}}</label> 
 	  		</td>
 	  	</tr>	
@@ -146,11 +174,7 @@
 
 
 
-
-
 </div>
-
-
 
 </body>
 </html>
