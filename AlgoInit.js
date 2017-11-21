@@ -147,7 +147,8 @@ app.controller("initctrl", function($scope , $http){
   		//create JSON and invoke nodeJS
   		var reqdata =  { "sequence1" : $scope.seq1,
       "sequence2" : $scope.seq2,
-      "alignment" : $scope.alignmethod,
+      "alignmethod" : $scope.alignmethod,
+      "aligntype" : $scope.matrixtype;
       "scorematrix" : $scope.matrix,
       "gap" : $scope.gap
     }
