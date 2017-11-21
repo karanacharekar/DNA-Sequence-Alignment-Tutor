@@ -1,0 +1,11 @@
+{
+  "name": "algorithmservices",
+  "version": "1.0.0",
+  "description": "Services to execute sequence alignment methods",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

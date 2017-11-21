@@ -1,7 +1,7 @@
 var app = angular.module("initapp", []);
 
 
-app.controller("initctrl", function($scope){
+app.controller("initctrl", function($scope , $http){
 
 	$scope.matrixtype = "Nucleotides";
 	var regexn = /[acgt][acgt][acgt][acgt]*/i;
@@ -160,11 +160,13 @@ app.controller("initctrl", function($scope){
                 }
             }
 
-            $http.post('/ServerRequest/PostDataResponse', data, config)
-            .success(function (data, status, headers, config) {
+        console.log(data);
+        
+            $http.post('http://127.0.0.1:3000/', data, config)
+            .then(function (data, status, headers, config) {
+              console.log('success');
                 $scope.PostDataResponse = data;
-            })
-            .error(function (data, status, header, config) {
+            },function (data, status, header, config) {
                 $scope.ResponseDetails = "Data: " + data +
                     "<hr />status: " + status +
                     "<hr />headers: " + header +
