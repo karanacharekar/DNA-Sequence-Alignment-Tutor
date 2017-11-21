@@ -93,14 +93,14 @@ app.controller("matrix", function($scope,$rootScope,$http){
         $rootScope.backtrack = alignment_result[1];
         //console.log(backtrack)
         $rootScope.result_matrix = alignment_result[0];
-        total_cellstobe_filled = (($rootScope.result_matrix.length) * ($rootScope.result_matrix[0].length)) - 1
+        $scope.total_cellstobe_filled = (($rootScope.result_matrix.length) * ($rootScope.result_matrix[0].length)) - 1
 
         //console.log(result_matrix)
     }
 
     
 
-    function Valchecker(i,j,val){
+    function ValDpChecker(i,j,val){
         if($rootScope.result_matrix[i][j]==val){
             return true;
         }
@@ -113,16 +113,45 @@ app.controller("matrix", function($scope,$rootScope,$http){
     //function to match user entered and actual values
 
 
+      $scope.MainBacktrackChecker = function(ind,val,id){
+           //console.log($rootScope.backtrack) 
+           var row = $rootScope.backtrack[ind][0][0]
+           var col = $rootScope.backtrack[ind][0][1]
+           //console.log(row+","+col)
+
+           //console.log($rootScope.backtrack[col])
+           if(ValBacktrackChecker(row,col,val)){
+                var x = document.getElementById(id);
+                x.style.backgroundColor = "#70db70";
+           }
+           else{
+
+           } 
+      }
+
+
+      function ValBacktrackChecker(row,col,val){
+          if($rootScope.result_matrix[row][col]==val){
+            //console.log($rootScope.backtrack[col])
+            
+            return true;
+          }          
+          else{
+            return false;
+          }
+      }
+
+
       $scope.MainDpChecker = function(column,row,val,id){
         
-        alert("row:"+row+" column:"+column+" val:" +val+" id:"+id );
+        //alert("row:"+row+" column:"+column+" val:" +val+" id:"+id );
         
-        $scope.count - 0
+        //$scope.count = 0
         $rootScope.hidehint1 = true;
         $rootScope.hidehint2 = true;
-        $rootScope.disablebacktrack = true;
+        //$rootScope.disablebacktrack = true;
         
-        console.log(total_cellstobe_filled);
+        console.log($scope.total_cellstobe_filled);
 
         //setAllFalse();
         //console.log(val);
@@ -131,15 +160,18 @@ app.controller("matrix", function($scope,$rootScope,$http){
         //$scope.query[row].color = true;
        // $scope.colr = red;
 
-       if(Valchecker(row,column,val)){
+       if(ValDpChecker(row,column,val)){
             var x = document.getElementById(id);
-            x.style.backgroundColor = "green";
-            
-            total_cellstobe_filled -= 1;
+            x.style.backgroundColor = "#70db70";
+            document.getElementById(id).disabled = true;
+            $scope.count = 0;
+            document.getElementById("hint1").style.display = "none";
+            document.getElementById("hint2").style.display = "none";
+            $scope.total_cellstobe_filled -= 1;
             $scope.hidehint1 = true;
             $scope.hidehint2 = true;
-            if(total_cellstobe_filled==0){
-                $scope.disablebacktrack = false;
+            if($scope.total_cellstobe_filled==0){
+               document.getElementById("backtrack").style.display = "block";
             }
        }
        else{
@@ -160,6 +192,7 @@ app.controller("matrix", function($scope,$rootScope,$http){
 
             }
             else if($scope.count==3){
+                document.getElementById("hint1").style.display = "none";
                 document.getElementById("hint2").style.display = "none";
                 console.log($rootScope.result_matrix[row][column])
 
@@ -168,9 +201,11 @@ app.controller("matrix", function($scope,$rootScope,$http){
 
                 document.getElementById(id).value = $rootScope.result_matrix[row][column];
                 var x = document.getElementById(id);
-                x.style.backgroundColor = "green";
-                total_cellstobe_filled -= 1;
+                x.style.backgroundColor = "#70db70";
+                document.getElementById(id).disabled = true;
                 $scope.count = 0;
+                $scope.total_cellstobe_filled -= 1;
+                
             }
             else{
 
