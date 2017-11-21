@@ -45,13 +45,13 @@
 			    <label class="control-label" for="field1"><b>Sequence 1</b><span class="req"> *</span></label>
 			    <div class="controls">
                     
-                <input name="seq1" type="text" maxlength="15" ng-model="seq1" class="form-control k-textbox" data-role="text" required><span id="errId2" class="error"></span></div>
+                <input name="seq1" type="text" maxlength="15" ng-model="seq1" ng-pattern="regex" class="form-control k-textbox" data-role="text" required><span id="errId2" class="error"></span></div>
                 
 		</div><div class="form-group">
 			    <label class="control-label" for="field2"><b>Sequence 2</b><span class="req"> *</span></label>
 			    <div class="controls">
                     
-                <input name="seq2" type="text" maxlength="15" ng-model="seq2" class="form-control k-textbox" data-role="text" required><span id="errId3" class="error"></span></div>
+                <input name="seq2" type="text" maxlength="15" ng-model="seq2" ng-pattern="regex" class="form-control k-textbox" data-role="text" required><span id="errId3" class="error"></span></div>
                 
 		</div><div class="form-group">
 			    <label class="control-label"><b>Alignment Method</b><span class="req"> *</span></label>
