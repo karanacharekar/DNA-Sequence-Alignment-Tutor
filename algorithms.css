@@ -33,7 +33,7 @@ width: 50px;
   background-color: #2e353d;
   position: fixed;
   top: 0px;
-  width: 400px;
+  width: 280px;
   height: 100%;
   color: #e1ffff;
 }
@@ -117,6 +117,9 @@ width: 50px;
   -o-transition: all 1s ease;
   -ms-transition: all 1s ease;
   transition: all 1s ease;
+}
+.color-class{
+	background-color: rgb(255,0,0);
 }
 @media (max-width: 767px) {
   .nav-side-menu {
