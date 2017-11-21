@@ -127,13 +127,12 @@
 
 	<h4 id= "hint1" style="display: none;"> hint 1 : Try Again </h4>
 	<h4 id= "hint2" style="display: none;"> hint 2 : Max( Horizontally left + Gap penalty, Vertically Top + Gap penalty,  Diagonally previous + value from Scoring Matrix)</h4>
-	<h2 id="qry_align" style="display: none;"><b> Aligned Sequence 1: {{aligned_query}} </b></h2>
-	<h2 id="db_align" style="display: none;"><b> Aligned Sequence 2: {{aligned_db}} </b></h2>
+	
 
 	<br>
-	<div id = "backtracker" style="display: none;">
+	<div id = "backtracker" style="display: block;">
 	<h2 align="center"> BACK - TRACK </h2>
-	<br>
+	<br>{{total_btcellstobe_filled}}
 	<h4> Please fill the values from left to right </h4>
 	
 	<br>
@@ -142,6 +141,8 @@
 			<td ng-repeat="x in backtrack track by $index"> <input type="number" style="border-style: solid; background-color: #ff4d4d" align="center" ng-attr-id="{{($index).toString()}}" ng-change="MainBacktrackChecker($index,mybVal,$index.toString())" ng-model="mybVal"> </td>
 		</tr>	 
 	</table>
+	<h2 id="qry_align" style="display: none;"><b> Aligned Sequence 1: {{aligned_seq1}} </b></h2>
+	<h2 id="db_align" style="display: none;"><b> Aligned Sequence 2: {{aligned_seq2}} </b></h2>
 	</div>
 	<br>
 	<br>

@@ -86,16 +86,20 @@ app.controller("matrix", function($scope,$rootScope,$http){
         console.log($scope.matrixvals)
         $scope.matrixchar = $scope.chars.split("")
         $scope.count = 0;
-
+        $scope.btcount = 0;
         console.log("rchd here")
         alignment_result = global($scope.seq1,$scope.seq2,$scope.matrixvals,$scope.chars,$scope.gappen);
         console.log("returned")
         $rootScope.backtrack = alignment_result[1];
         //console.log(backtrack)
         $rootScope.result_matrix = alignment_result[0];
-        $scope.total_cellstobe_filled = (($rootScope.result_matrix.length) * ($rootScope.result_matrix[0].length)) - 1
+        $scope.aligned_seq1 = alignment_result[2];
+        $scope.aligned_seq2 = alignment_result[3];
 
-        //console.log(result_matrix)
+        $scope.total_cellstobe_filled = (($rootScope.result_matrix.length) * ($rootScope.result_matrix[0].length)) - 1
+        $scope.total_btcellstobe_filled = $scope.backtrack.length;
+
+        //console.log($scope.total_btcellstobe_filled)
     }
 
     
@@ -123,6 +127,12 @@ app.controller("matrix", function($scope,$rootScope,$http){
            if(ValBacktrackChecker(row,col,val)){
                 var x = document.getElementById(id);
                 x.style.backgroundColor = "#70db70";
+                $scope.total_btcellstobe_filled -= 1;
+
+                if($scope.total_btcellstobe_filled==0){
+               document.getElementById("db_align").style.display = "block";
+               document.getElementById("qry_align").style.display = "block";
+            }
            }
            else{
 
@@ -153,12 +163,7 @@ app.controller("matrix", function($scope,$rootScope,$http){
         
         console.log($scope.total_cellstobe_filled);
 
-        //setAllFalse();
-        //console.log(val);
-        //$(this).css({"background-color":"green"});
-
-        //$scope.query[row].color = true;
-       // $scope.colr = red;
+    
 
        if(ValDpChecker(row,column,val)){
             var x = document.getElementById(id);
@@ -171,7 +176,7 @@ app.controller("matrix", function($scope,$rootScope,$http){
             $scope.hidehint1 = true;
             $scope.hidehint2 = true;
             if($scope.total_cellstobe_filled==0){
-               document.getElementById("backtrack").style.display = "block";
+               document.getElementById("backtracker").style.display = "block";
             }
        }
        else{
@@ -204,7 +209,7 @@ app.controller("matrix", function($scope,$rootScope,$http){
                 x.style.backgroundColor = "#70db70";
                 document.getElementById(id).disabled = true;
                 $scope.count = 0;
-                $scope.total_cellstobe_filled -= 1;
+                //$scope.total_cellstobe_filled -= 1;
                 
             }
             else{
