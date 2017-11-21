@@ -71,7 +71,7 @@ module.exports = app;
 
 
     app.get('/api/GetUserQuery', function(req, res) {
-        UserQuery.findOne({}, {}, { sort: { 'created_at' : -1 } },function(err, queryparams) {
+        UserQuery.findOne({}, {}, { sort: { $natural:-1 } },function(err, queryparams) {
 
             // if there is an error retrieving, send the error. nothing after res.send(err) will execute
             if (err)
