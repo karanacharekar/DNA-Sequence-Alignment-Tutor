@@ -67,7 +67,7 @@ app.post('/api/executeAlignment',function(req,res){
   	res.send(alignObj);
 });
 
-function global(seq1,seq2,alignment,map,gap){
+function globalAlignment(seq1,seq2,alignment,map,gap){
 	var alignmat = [];
 	
 	for (var i = 0; i <= seq1.length; i++) {
@@ -91,13 +91,46 @@ function global(seq1,seq2,alignment,map,gap){
 			}
 		}
 
+	var i = seq1.length;
+	var j = seq2.length;
+	var alignedseq1 = [];
+	var alignedseq2 = [];
+	var alignkind = [];
+	var bestalign = [];
+
+	while (i > 0 || j > 0) {
+		if (i > 0 && j > 0 && alignmat[i][j] == (alignmat[i - 1][j - 1]	+ map[seq1.charAt(i-1)+seq2.charAt(j-1)])) {
+			alignedseq1.unshift(seq1.charAt(i-1));
+			alignkind.unshift('|');
+			alignedseq2.unshift(seq2.charAt(j-1));
+		} else if (i > 0 && alignmat[i][j] == alignmat[i - 1][j] + gap) {
+			alignedseq1.unshift(seq1.charAt(i-1));
+			alignkind.unshift('i');
+			alignedseq2.unshift('-');
+		} else {
+			alignedseq1.unshift('-');
+			alignkind.unshift('d');
+			alignedseq2.unshift(seq2.charAt(j-1));
+		}
+	}
+
+	bestalign.push(alignedseq1);
+	bestalign.push(alignkind);
+	bestalign.push(alignedseq2);
+
+	var globaljson = {
+		"dpmatrix" : alignmat,
+		"bestalignment" : bestalign
+	};
+
+	return  globaljson;
 }
 
-function global(seq1,seq2,alignment,map,gap){
+function localAlignment(seq1,seq2,alignment,map,gap){
 
 }
 
-function global(seq1,seq2,alignment,map,gap){
+function dovetailAlignment(seq1,seq2,alignment,map,gap){
 
 }
 
