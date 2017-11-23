@@ -22,16 +22,19 @@ app.post('/api/executeAlignment',function(req,res){
   //execute alignment method
 	var alignObj = null;
 
+	console.log(req.body);
+
 	var seq1 = req.body.sequence1;
 	var seq2 = req.body.sequence2;
 	var alignmethod = req.body.alignmethod;
-	var aligntype = req.body.matrixtype;
+	var aligntype = req.body.aligntype;
 	var submatrix = req.body.scorematrix;
 	var gap = req.body.gap;
 
 	var letters = '';
 	var map = {};
 
+	//console.log(aligntype);
 
 	if(aligntype == "Nucleotides"){
 		letters = 'acgt';
@@ -64,6 +67,7 @@ app.post('/api/executeAlignment',function(req,res){
 
   }
   	
+  	console.log(alignObj);
   	res.header("Content-Type","application/json");
   	res.send(alignObj);
 });

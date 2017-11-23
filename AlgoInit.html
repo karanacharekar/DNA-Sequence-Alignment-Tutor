@@ -23,7 +23,7 @@
     <div class="container-fluid" ng-controller = "initctrl">
         <div class="row">
 
-            <form name="myform" class="form-horizontal" role="form"  novalidate>
+            <form name="myform" id="myform" action="./algorithms.html" method="post" class="form-horizontal" role="form"  novalidate>
                 <div class="container-fluid shadow">
                     <div class="row">
                         <div id="valErr" class="row viewerror clearfix hidden">
@@ -68,9 +68,10 @@
 
         <div class="form-group">
         <div class="controls">
-            <select name="matrixlist" class="form-control" ng-model="matrixname" required>
+            <select name="matrixlist" class="form-control"  ng-model="matrixname" required>
                 <option value=""></option>  
-                <option ng-repeat="x in selmatrix">{{x}}</option>
+                <option ng-if="seltype" ng-repeat="x in submatrixN">{{x}}</option>
+                <option ng-if="!seltype" ng-repeat="y in submatrixP">{{y}}</option>
             </select>
         </div>
 
@@ -113,8 +114,12 @@
                     
                 <input name="gap" type="number" class="form-control k-textbox" ng-model="gap" data-role="text" required><span id="errId6" class="error"></span></div>
                 
-		</div><div class="form-group group-inline btn-group">
-		      <button name="submit" type="button" class="btn btn-primary" ng-click= "initialize()" ng-disabled="myform.$invalid"><span class="glyphicon glyphicon-play-circle"></span> Initialize</button>
+		</div>
+        <div>
+            <div ng-show="false"><input name="alignoutput" type="textarea" rows="5" class="form-control" ng-model="alignoutput" data-role="text"></div>
+        </div>    
+        <div class="form-group group-inline btn-group">
+		      <button type="submit" class="btn btn-primary" ng-click= "initialize()" ng-disabled="myform.$invalid"><span class="glyphicon glyphicon-play-circle"></span> Initialize</button>
           </div></div>
                                     </div>
                                 
