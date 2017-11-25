@@ -57,13 +57,15 @@ module.exports = app;
     	var names = req.query.name
         console.log(names)
         // use mongoose to get matrix using its name
-        ScoringMatrix.findOne({ "name" : "TEMP" },'name chars matrix',function(err, todos) {
+        ScoringMatrix.findOne({ "name" :names },'name char matrix',function(err, todos) {
 
             // if there is an error retrieving, send the error. nothing after res.send(err) will execute
             if (err)
                 res.send(err)
-
+            //console.log("heree")
+            console.log("got response")
             console.log(todos)
+
             res.json(todos); 
             //res.send(200);
         });

@@ -30,14 +30,14 @@
                 	<li>
                 		<div class="form-group">
 						      <h6 for="usr" style="margin-left: 10px;">Query Sequence 1 :</h6>
-						      <h6 ng-bind="seq1" style="margin-left: 10px; color: red"></h6>
+						      <h6 ng-bind="seq1" style="margin-left: 10px; color: yellow"></h6>
 			   			 </div>
 			   		</li>
 
 			   		<li>
                 		<div class="form-group">
 						      <h6 for="usr" style="margin-left: 10px;">Query Sequence 2 :</h6>
-						      <h6 ng-bind="seq2" style="margin-left: 10px; color: red"></h6>
+						      <h6 ng-bind="seq2" style="margin-left: 10px; color: yellow"></h6>
 			   			 </div>
 			   		</li>		
                 </ul>
@@ -49,7 +49,7 @@
                 <ul  id="product">
                    <li>
                 		<div class="form-group">
-						      <h6 ng-bind="aligntype" style="margin-left: 10px; color: red"></h6>
+						      <h6 ng-bind="aligntype" style="margin-left: 10px; color: yellow"></h6>
 			   			 </div>
 			   		</li>
                      
@@ -62,7 +62,7 @@
                 <ul  id="service">
                   	<li>
                 		<div class="form-group">
-						      <h6 ng-bind="scoringmatrix" style="margin-left: 10px; color: red"></h6>
+						      <h6 ng-bind="scoringmatrix" style="margin-left: 10px; color: yellow"></h6>
 			   			 </div>
 			   		</li>
                 </ul>
@@ -74,7 +74,7 @@
                 <ul  id="new">
                   <li>
                   	<div class="form-group" >
-						      <h6 ng-bind="gappen" style="margin-left: 10px; color: red"></h6>
+						      <h6 ng-bind="gappen" style="margin-left: 10px; color: yellow"></h6>
 			   		</div>
                   </li>
                 </ul>
@@ -92,8 +92,6 @@
 <div   align="center"  style="width: calc(100% - 280px); float: right;">
   <h2 align= "center">Dynamic Table</h2>
   <br>{{total_cellstobe_filled}}
-  <br>{{aligned_query}}
-  <br>{{aligned_db}}
   <h4> Please fill the first row and column first </h4>
   <h4> Please fill the matrix in the same order as shown in the tutorials</h4>
   <br>
@@ -130,9 +128,9 @@
 	
 
 	<br>
-	<div id = "backtracker" style="display: block;">
+	<div id = "backtracker" style="display: none;">
 	<h2 align="center"> BACK - TRACK </h2>
-	<br>{{total_btcellstobe_filled}}
+	<br>
 	<h4> Please fill the values from left to right </h4>
 	
 	<br>
@@ -149,26 +147,23 @@
 	<br>	
 	<h2 align="center"> {{scoringmatrix}} </h2>
 	<br>
-
-	<br>
-
 	<table  align= "center" style="min-height: 10px; min-width: 10px  border: 1px solid #ddd; border: 1px solid black;" >
 	  	<tr>
 	  		<th></th>	
-	  		<th ng-repeat="x in matrixchar track by $index">{{x}}</th>
+	  		<th ng-repeat="x in matrixchar track by $index"><b>{{x}}</b></th>
 	  	</tr>
 
 	  	<tr>
-	  		<td> {{matrixchar[0]}}</td>
+	  		<td> <b>{{matrixchar[0]}}</b></td>
 	  		<td ng-repeat="x in matrixvals[0] track by $index"> 
-	  			<lable>{{x}}</lable>
+	  			<lable><b>{{x}}</b></lable>
 	  		</td>
 	  	</tr>
 
 	  	<tr ng-repeat="d in matrixchar.slice(1,matrixvals.length)">
-	  		<td>{{d}}</td>
+	  		<td><b>{{d}}</b></td>
 	  		<td ng-repeat="x in matrixvals[$index] track by $index" align="center">
-	  			<label>{{x}}</label> 
+	  			<label><b>{{x}}</b></label> 
 	  		</td>
 	  	</tr>	
  	</table>

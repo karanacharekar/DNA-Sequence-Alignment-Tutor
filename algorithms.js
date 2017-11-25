@@ -18,20 +18,16 @@ app.controller("matrix", function($scope,$rootScope,$http){
 
     // GET THE USER QUERY SEQUENCE AND CHOICES FROM DB
 
-    userqueryfunc();
+    getuserqueryfunc();
 
-    function userqueryfunc(){        
+    function getuserqueryfunc(){        
 
         $http({
           method: 'GET',
           url: 'http://localhost:8080/api/GetUserQuery'
         }).then(function successCallback(response) {
             
-           
             console.log(response);
-            
-
-            
             $scope.sequence1 = response.data.sequence1;
             $scope.sequence2 = response.data.sequence2;
             $scope.alignment = response.data.alignment;
@@ -51,10 +47,10 @@ app.controller("matrix", function($scope,$rootScope,$http){
           url: 'http://localhost:8080/api/ScoringMatrix',
           params: {name: $scope.matrixtype}
         }).then(function successCallback(response) {
-            
+            console.log(response.data)
             $scope.scorematrix = response.data.matrix;
             console.log($scope.scorematrix);
-            $scope.chars = response.data.chars;
+            $scope.chars = response.data.char;
             
             
             initialize();
@@ -68,10 +64,7 @@ app.controller("matrix", function($scope,$rootScope,$http){
     // DISPLAY USERS SELECTED SCORING MATRIX
 
 
-
-
     function initialize(){
-
 
         $scope.query = $scope.sequence1.split("")
         //$scope.query = ["a","t","g","c","a"]
@@ -81,17 +74,24 @@ app.controller("matrix", function($scope,$rootScope,$http){
         $scope.seq2 = $scope.sequence2
         $scope.gappen = $rootScope.gappenalty
         $scope.aligntype = $scope.alignment
-        $scope.scoringmatrix = "PAM50"
+        $scope.scoringmatrix = $scope.matrixtype
         $scope.matrixvals = $scope.scorematrix
         console.log($scope.matrixvals)
         $scope.matrixchar = $scope.chars.split("")
         $scope.count = 0;
         $scope.btcount = 0;
         console.log("rchd here")
-        alignment_result = global($scope.seq1,$scope.seq2,$scope.matrixvals,$scope.chars,$scope.gappen);
+
+        if($scope.aligntype.toLowerCase() == "global"){
+            alignment_result = global($scope.seq1,$scope.seq2,$scope.matrixvals,$scope.chars,$scope.gappen);
+        }
+        else if($scope.aligntype.toLowerCase() == "local"){
+            alignment_result = local($scope.seq1,$scope.seq2,$scope.matrixvals,$scope.chars,$scope.gappen);
+        }
+
         console.log("returned")
         $rootScope.backtrack = alignment_result[1];
-        //console.log(backtrack)
+        console.log($rootScope.backtrack)
         $rootScope.result_matrix = alignment_result[0];
         $scope.aligned_seq1 = alignment_result[2];
         $scope.aligned_seq2 = alignment_result[3];
