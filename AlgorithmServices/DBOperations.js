@@ -12,8 +12,8 @@ app.use(function(req, res, next) {
 });
 
 
-app.listen(8080,function(){
-  console.log("Started on PORT 8080");
+app.listen(5555,function(){
+  console.log("Started on PORT 5555");
 })
 
 
@@ -100,4 +100,34 @@ app.post('/api/insertMatrix',function(req,res){
 
 });
 
+app.post('/api/insertResult',function(req,res){
+	
+	var MongoClient2 = require('mongodb').MongoClient;
+	var assert2 = require('assert');
+	var ObjectId = require('mongodb').ObjectID;
+	var url2 = 'mongodb://tutor:tutor@ds115866.mlab.com:15866/seqaligntutor';
 
+	var matobj = req.body;
+	
+	console.log(req.body);
+
+	var collectionname = 'userqueries';
+
+	var insertResult = function(db, callback) {
+		db.collection(collectionname).insertOne(matobj , function(err, result) {
+    			assert2.equal(err, null);
+    			console.log("Inserted successfully!");
+    			callback();
+ 		});
+ 			
+	}
+
+	MongoClient2.connect(url2, function(err, db) {
+  		assert2.equal(null, err);
+  		insertResult(db, function() {
+      	db.close();
+  		});
+
+    });
+
+});

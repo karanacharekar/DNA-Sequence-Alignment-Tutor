@@ -22,8 +22,6 @@ app.post('/api/executeAlignment',function(req,res){
   //execute alignment method
 	var alignObj = null;
 
-	console.log(req.body);
-
 	var seq1 = req.body.sequence1;
 	var seq2 = req.body.sequence2;
 	var alignmethod = req.body.alignmethod;
@@ -43,7 +41,6 @@ app.post('/api/executeAlignment',function(req,res){
 		letters = 'arndceqghilkmfpstwyv';
 	}
 
-	console.log(letters);
 
 	for(var i=0;i<letters.length;i++){
 		for(var j=0;j<letters.length;j++){
@@ -67,6 +64,10 @@ app.post('/api/executeAlignment',function(req,res){
 
   }
   	
+  	//console.log(alignObj);
+  	alignObj['scorematrix'] = req.body.scorematrix;
+  	console.log(letters);
+  	alignObj['letters'] = letters;
   	console.log(alignObj);
   	res.header("Content-Type","application/json");
   	res.send(alignObj);
@@ -96,14 +97,61 @@ function globalAlignment(seq1,seq2,map,gap){
 			}
 		}
 
+	
 	var i = seq1.length;
 	var j = seq2.length;
-	var alignedseq1 = [];
+	/*var alignedseq1 = [];
 	var alignedseq2 = [];
 	var alignkind = [];
-	var bestalign = [];
+	var bestalign = [];*/
+	var allalign = [];
+	var temparr = [[i,j]];
+	var tarr = [];
+	var arrc = 1 , arrc1 = 0 , flag = false;
 
-	while (i > 0 || j > 0) {
+while(temparr.length > 0){
+	tarr = [];
+	//console.log(temparr);
+	while(arrc > 0){
+
+		for(var p=0;p<tarr.length;p++)
+			if(tarr[p].includes(temparr[0][0]) && tarr[p].includes(temparr[0][1]))
+				flag = true;
+
+		if(!flag){
+			tarr.push([temparr[0][0] , temparr[0][1]]);
+			flag = false;
+		}
+
+
+		if (temparr[0][0] > 0 && temparr[0][1] > 0 && alignmat[temparr[0][0]][temparr[0][1]] == (alignmat[temparr[0][0] - 1][temparr[0][1] - 1]	+ map[seq1.charAt(temparr[0][0]-1)+seq2.charAt(temparr[0][1]-1)])) {
+			temparr.push([temparr[0][0] - 1 , temparr[0][1] - 1]);
+			arrc1++;
+		} 
+
+		if (temparr[0][0] > 0 && alignmat[temparr[0][0]][temparr[0][1]] == alignmat[temparr[0][0] - 1][temparr[0][1]] + gap) {
+			temparr.push([temparr[0][0] - 1 , temparr[0][1]]);
+			arrc1++;
+		} 
+
+		if (temparr[0][1] > 0 && alignmat[temparr[0][0]][temparr[0][1]] == alignmat[temparr[0][0]][temparr[0][1]-1] + gap) {
+			temparr.push([temparr[0][0] , temparr[0][1] - 1]);
+			arrc1++;
+		}
+
+		temparr.shift();
+		arrc--;
+		flag = false;
+	}
+		allalign.push(tarr);
+		arrc = arrc1;
+		arrc1 = 0;
+}
+
+allalign.pop();
+console.log(allalign);
+
+/*while (i > 0 || j > 0) {
 		if (i > 0 && j > 0 && alignmat[i][j] == (alignmat[i - 1][j - 1]	+ map[seq1.charAt(i-1)+seq2.charAt(j-1)])) {
 			alignedseq1.unshift(seq1.charAt(i-1));
 			alignkind.unshift('|');
@@ -121,16 +169,20 @@ function globalAlignment(seq1,seq2,map,gap){
 			alignedseq2.unshift(seq2.charAt(j-1));
 			j--;
 		}
-	}
 
-	bestalign.push(alignedseq1);
+		
+	}*/
+
+
+
+	/*bestalign.push(alignedseq1);
 	bestalign.push(alignkind);
-	bestalign.push(alignedseq2);
+	bestalign.push(alignedseq2);*/
 
 	var globaljson = {
 		"dpmatrix" : alignmat,
 		"score" : alignmat[seq1.length][seq2.length],
-		"bestalignment" : bestalign
+		"allalignments" : allalign
 	};
 
 	return  globaljson;
@@ -169,12 +221,69 @@ function localAlignment(seq1,seq2,map,gap){
 
 	var i = maxi;
 	var j = maxj;
-	var alignedseq1 = [];
+	/*var alignedseq1 = [];
 	var alignedseq2 = [];
 	var alignkind = [];
-	var bestalign = [];
+	var bestalign = [];*/
+	var allalign = [];
+	var temparr = [[i,j]];
+	var tarr = [];
+	var arrc = 1 , arrc1 = 0 , flag = false,stopflag = true;
 
-	while (i > 0 || j > 0) {
+while(temparr.length > 0){
+	tarr = [];
+	//console.log(temparr);
+	while(arrc > 0){
+
+		for(var p=0;p<tarr.length;p++)
+			if(tarr[p].includes(temparr[0][0]) && tarr[p].includes(temparr[0][1]))
+				flag = true;
+
+		if(!flag){
+			tarr.push([temparr[0][0] , temparr[0][1]]);
+			flag = false;
+		}
+
+
+		if (temparr[0][0] > 0 && temparr[0][1] > 0 && alignmat[temparr[0][0]][temparr[0][1]] == (alignmat[temparr[0][0] - 1][temparr[0][1] - 1]	+ map[seq1.charAt(temparr[0][0]-1)+seq2.charAt(temparr[0][1]-1)])) {
+			temparr.push([temparr[0][0] - 1 , temparr[0][1] - 1]);
+			stopflag = false;
+			arrc1++;
+		} 
+
+		if (temparr[0][0] > 0 && alignmat[temparr[0][0]][temparr[0][1]] == alignmat[temparr[0][0] - 1][temparr[0][1]] + gap) {
+			temparr.push([temparr[0][0] - 1 , temparr[0][1]]);
+			stopflag = false;
+			arrc1++;
+		} 
+
+		if (temparr[0][1] > 0 && alignmat[temparr[0][0]][temparr[0][1]] == alignmat[temparr[0][0]][temparr[0][1]-1] + gap) {
+			temparr.push([temparr[0][0] , temparr[0][1] - 1]);
+			stopflag = false;
+			arrc1++;
+		}
+
+		if(stopflag)
+			break;
+		
+		temparr.shift();
+		arrc--;
+		flag = false;
+	}
+		
+		if(stopflag)
+			break;
+
+		allalign.push(tarr);
+		arrc = arrc1;
+		arrc1 = 0;
+}
+
+allalign.pop();
+console.log(allalign);
+
+
+	/*while (i > 0 || j > 0) {
 		if (i > 0 && j > 0 && alignmat[i][j] == (alignmat[i - 1][j - 1]	+ map[seq1.charAt(i-1)+seq2.charAt(j-1)])) {
 			alignedseq1.unshift(seq1.charAt(i-1));
 			alignkind.unshift('|');
@@ -200,12 +309,12 @@ function localAlignment(seq1,seq2,map,gap){
 
 	bestalign.push(alignedseq1);
 	bestalign.push(alignkind);
-	bestalign.push(alignedseq2);
+	bestalign.push(alignedseq2);*/
 
 	var localjson = {
 		"dpmatrix" : alignmat,
 		"score" : maxvalue,
-		"bestalignment" : bestalign
+		"allalignments" : allalign
 	};
 
 	return  localjson;
@@ -214,6 +323,7 @@ function localAlignment(seq1,seq2,map,gap){
 
 
 function dovetailAlignment(seq1,seq2,map,gap){
+
 	var alignmat = [];
 	
 	for (var i = 0; i <= seq1.length; i++) {
@@ -258,7 +368,55 @@ function dovetailAlignment(seq1,seq2,map,gap){
 	var alignkind = [];
 	var bestalign = [];
 
-	while (i > 0 || j > 0) {
+	var allalign = [];
+	var temparr = [[i,j]];
+	var tarr = [];
+	var arrc = 1 , arrc1 = 0 , flag = false,stopflag = true;
+
+while(temparr.length > 0){
+	tarr = [];
+	//console.log(temparr);
+	while(arrc > 0){
+
+		for(var p=0;p<tarr.length;p++)
+			if(tarr[p].includes(temparr[0][0]) && tarr[p].includes(temparr[0][1]))
+				flag = true;
+
+		if(!flag){
+			tarr.push([temparr[0][0] , temparr[0][1]]);
+			flag = false;
+		}
+
+
+		if (temparr[0][0] > 0 && temparr[0][1] > 0 && alignmat[temparr[0][0]][temparr[0][1]] == (alignmat[temparr[0][0] - 1][temparr[0][1] - 1]	+ map[seq1.charAt(temparr[0][0]-1)+seq2.charAt(temparr[0][1]-1)])) {
+			temparr.push([temparr[0][0] - 1 , temparr[0][1] - 1]);
+			arrc1++;
+		} 
+
+		if (temparr[0][0] > 0 && alignmat[temparr[0][0]][temparr[0][1]] == alignmat[temparr[0][0] - 1][temparr[0][1]] + gap) {
+			temparr.push([temparr[0][0] - 1 , temparr[0][1]]);
+			arrc1++;
+		} 
+
+		if (temparr[0][1] > 0 && alignmat[temparr[0][0]][temparr[0][1]] == alignmat[temparr[0][0]][temparr[0][1]-1] + gap) {
+			temparr.push([temparr[0][0] , temparr[0][1] - 1]);
+			arrc1++;
+		}
+
+		temparr.shift();
+		arrc--;
+		flag = false;
+	}
+		allalign.push(tarr);
+		arrc = arrc1;
+		arrc1 = 0;
+}
+
+allalign.pop();
+console.log(allalign);
+//console.log(alignmat);
+
+	/*while (i > 0 && j > 0) {
 		if (i > 0 && j > 0 && alignmat[i][j] == (alignmat[i - 1][j - 1]	+ map[seq1.charAt(i-1)+seq2.charAt(j-1)])) {
 			alignedseq1.unshift(seq1.charAt(i-1));
 			alignkind.unshift('|');
@@ -270,7 +428,7 @@ function dovetailAlignment(seq1,seq2,map,gap){
 			alignkind.unshift('i');
 			alignedseq2.unshift('-');
 			i--;
-		} else if (i > 0 && alignmat[i][j] == alignmat[i][j - 1] + gap) {
+		} else if (j > 0 && alignmat[i][j] == alignmat[i][j - 1] + gap) {
 			alignedseq1.unshift('-');
 			alignkind.unshift('d');
 			alignedseq2.unshift(seq2.charAt(j-1));
@@ -283,10 +441,12 @@ function dovetailAlignment(seq1,seq2,map,gap){
 	bestalign.push(alignkind);
 	bestalign.push(alignedseq2);
 
+	console.log(bestalign);*/
+
 	var dovetailjson = {
 		"dpmatrix" : alignmat,
 		"score" : maxvalue,
-		"bestalignment" : bestalign
+		"allalignments" : allalign
 	};
 
 	return  dovetailjson;

@@ -28,7 +28,7 @@ app.controller("initctrl", function($scope , $http){
     $scope.selmatrix = [];
 
     function selectNMatrix(){
-    var url1 = 'http://127.0.0.1:8080/api/getAllMatrices?matrixtype=' + 'Nucleotides';
+    var url1 = 'http://127.0.0.1:5555/api/getAllMatrices?matrixtype=' + 'Nucleotides';
 
     var selectreq = {
         method: 'GET',
@@ -79,7 +79,7 @@ app.controller("initctrl", function($scope , $http){
 
     function selectPMatrix(){
 
-    var url1 = 'http://127.0.0.1:8080/api/getAllMatrices?matrixtype=' + 'AminoAcids';
+    var url1 = 'http://127.0.0.1:5555/api/getAllMatrices?matrixtype=' + 'AminoAcids';
 
     var selectreq = {
         method: 'GET',
@@ -250,23 +250,32 @@ app.controller("initctrl", function($scope , $http){
       $http(matrixreq)
         .then(function (response) {
              $scope.inmessage = response['data'];
+             $scope.instatus = true;
           if($scope.inmessage == "Inserted successfully!"){
              if($scope.matrixtype == "Nucleotides"){
                 selectNMatrix();
             }else{
                 selectPMatrix();
             }
+             
           }
              console.log('success');
           },function (response) {
              console.log('error');
           }); 
 
-        $scope.instatus = true;
+      
 
-  	}        
+  	}      
+
+    $scope.$watch('inmessage' ,function(){
+      if($scope.inmessage != ""){
+        $scope.instatus = true;
+      }
+    });  
 
   	$scope.closeAlert = function(){
+      $scope.inmessage = "";
   		$scope.instatus = false;
   	}
 	
@@ -284,9 +293,6 @@ app.controller("initctrl", function($scope , $http){
 
       var req = {
         method: 'POST',
-      "alignmethod" : $scope.alignmethod,
-      "aligntype" : $scope.matrixtype,
-
         url: 'http://127.0.0.1:3000/api/executeAlignment',
         headers: {
               'Content-Type': 'application/json',
@@ -302,11 +308,38 @@ app.controller("initctrl", function($scope , $http){
              console.log('success');
              $scope.alignoutput = JSON.stringify(response.data);
              console.log($scope.alignoutput);
+
+             var finaljson = JSON.parse($scope.alignoutput);
+            console.log(finaljson);
+
+            finaljson['sequence1'] = reqdata['sequence1'];
+            finaljson['sequence2'] = reqdata['sequence2'];
+            finaljson['aligntype'] = reqdata['aligntype'];
+            finaljson['alignmethod'] = reqdata['alignmethod'] ;
+
+            var finalreq = {
+              method: 'POST',
+              url: 'http://127.0.0.1:5555/api/insertResult',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Access-Control-Request-Headers' : '*'
+              },
+              data: finaljson
+            }
+
+            $http(finalreq)
+            .then(function (response) {
+                console.log('success');
+             },function (response) {
+             console.log('error');
+            }); 
+
           },function (response) {
              console.log('error');
           });	
 
-        console.log($('#myform'));
+        
+        //console.log($('#myform'));
 
   	}
 
