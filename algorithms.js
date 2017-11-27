@@ -17,7 +17,8 @@ app.controller("matrix", function($scope,$rootScope,$http){
     $scope.chars = "";
 
     // GET THE USER QUERY SEQUENCE AND CHOICES FROM DB
-
+    
+    
     getuserqueryfunc();
 
     function getuserqueryfunc(){        
@@ -286,10 +287,6 @@ app.controller("matrix", function($scope,$rootScope,$http){
           }
           return -1;
         }  
-
-
- 
-
 
 
 

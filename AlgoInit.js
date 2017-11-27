@@ -330,11 +330,12 @@ app.controller("initctrl", function($scope , $http){
               data: finaljson
             }
 
-           
+                      
 
             $http(finalreq)
             .then(function (response) {
                 console.log('success');
+
              },function (response) {
              console.log('error');
             }); 
