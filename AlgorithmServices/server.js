@@ -100,10 +100,10 @@ function globalAlignment(seq1,seq2,map,gap){
 	
 	var i = seq1.length;
 	var j = seq2.length;
-	/*var alignedseq1 = [];
+	var alignedseq1 = [];
 	var alignedseq2 = [];
 	var alignkind = [];
-	var bestalign = [];*/
+	var bestalign = [];
 	var allalign = [];
 	var temparr = [[i,j]];
 	var tarr = [];
@@ -148,10 +148,10 @@ while(temparr.length > 0){
 		arrc1 = 0;
 }
 
-allalign.pop();
+//allalign.pop();
 console.log(allalign);
 
-/*while (i > 0 || j > 0) {
+while (i > 0 || j > 0) {
 		if (i > 0 && j > 0 && alignmat[i][j] == (alignmat[i - 1][j - 1]	+ map[seq1.charAt(i-1)+seq2.charAt(j-1)])) {
 			alignedseq1.unshift(seq1.charAt(i-1));
 			alignkind.unshift('|');
@@ -171,13 +171,15 @@ console.log(allalign);
 		}
 
 		
-	}*/
+	}
 
 
 
-	/*bestalign.push(alignedseq1);
+	bestalign.push(alignedseq1);
 	bestalign.push(alignkind);
-	bestalign.push(alignedseq2);*/
+	bestalign.push(alignedseq2);
+
+	console.log(bestalign);
 
 	var globaljson = {
 		"dpmatrix" : alignmat,
@@ -221,10 +223,10 @@ function localAlignment(seq1,seq2,map,gap){
 
 	var i = maxi;
 	var j = maxj;
-	/*var alignedseq1 = [];
+	var alignedseq1 = [];
 	var alignedseq2 = [];
 	var alignkind = [];
-	var bestalign = [];*/
+	var bestalign = [];
 	var allalign = [];
 	var temparr = [[i,j]];
 	var tarr = [];
@@ -279,11 +281,11 @@ while(temparr.length > 0){
 		arrc1 = 0;
 }
 
-allalign.pop();
+//allalign.pop();
 console.log(allalign);
 
 
-	/*while (i > 0 || j > 0) {
+	while (i > 0 || j > 0) {
 		if (i > 0 && j > 0 && alignmat[i][j] == (alignmat[i - 1][j - 1]	+ map[seq1.charAt(i-1)+seq2.charAt(j-1)])) {
 			alignedseq1.unshift(seq1.charAt(i-1));
 			alignkind.unshift('|');
@@ -309,7 +311,9 @@ console.log(allalign);
 
 	bestalign.push(alignedseq1);
 	bestalign.push(alignkind);
-	bestalign.push(alignedseq2);*/
+	bestalign.push(alignedseq2);
+
+	console.log(bestalign);
 
 	var localjson = {
 		"dpmatrix" : alignmat,
@@ -412,7 +416,7 @@ while(temparr.length > 0){
 		arrc1 = 0;
 }
 
-allalign.pop();
+//allalign.pop();
 console.log(allalign);
 //console.log(alignmat);
 

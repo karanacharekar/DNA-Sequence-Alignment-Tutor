@@ -310,12 +310,15 @@ app.controller("initctrl", function($scope , $http){
              console.log($scope.alignoutput);
 
              var finaljson = JSON.parse($scope.alignoutput);
-            console.log(finaljson);
-
+            
             finaljson['sequence1'] = reqdata['sequence1'];
             finaljson['sequence2'] = reqdata['sequence2'];
             finaljson['aligntype'] = reqdata['aligntype'];
-            finaljson['alignmethod'] = reqdata['alignmethod'] ;
+            finaljson['alignmethod'] = reqdata['alignmethod'];
+            finaljson['gap'] = reqdata['gap'];
+            finaljson['matrixname'] = $scope.matrixname;
+
+            console.log(finaljson);
 
             var finalreq = {
               method: 'POST',
@@ -326,6 +329,8 @@ app.controller("initctrl", function($scope , $http){
               },
               data: finaljson
             }
+
+           
 
             $http(finalreq)
             .then(function (response) {
