@@ -95,9 +95,9 @@
 		alpha = alpha.toUpperCase();
 		console.log(query_seq)
 		console.log(db_seq)
-		var row_len = query_seq.length+1
+		var row_len = query_seq.length+1 
 		var col_len = db_seq.length+1
-		var score_mat = new Array(row_len).fill(null).map(()=>new Array(col_len).fill(null));
+		var score_mat = new Array(col_len).fill(null).map(()=>new Array(row_len).fill(null));
 		console.log("----")
 		console.log(score_mat)
 		var fin_score = 0
@@ -139,7 +139,7 @@
 		j =  fin_score_col;
 		var backtrack = [[[i,j]]];
 		
-		console.log(score_mat)	
+		//console.log(score_mat)	
 		console.log(i)
 		console.log(j)
 

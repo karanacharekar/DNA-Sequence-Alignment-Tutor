@@ -17,7 +17,7 @@ module.exports = app;
 
     // configuration =================
 
-    mongoose.connect('mongodb://localhost:27017/align_tutor');     // connect to mongoDB database on modulus.io
+    mongoose.connect('mongodb://tutor:tutor@ds115866.mlab.com:15866/seqaligntutor');     // connect to mongoDB database on modulus.io
     app.use(express.static(__dirname + '/public'));                 // set the static files location /public/img will be /img for users
     //app.use(morgan('dev'));                                         // log every request to the console
     app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
@@ -41,8 +41,14 @@ module.exports = app;
     var UserQuery = mongoose.model('userqueries', {
         sequence1 : String,
         sequence2 : String,
-        alignment : String,
+        alignmethod : String,
+        aligntype : String,
+        letters : String,
         scorematrix : String,
+        dpmatrix : [[Number]],
+        scorematrix : [[Number]],
+        score : Number,
+        allalignments : [[[Number]]],
         gap : Number
     });
 

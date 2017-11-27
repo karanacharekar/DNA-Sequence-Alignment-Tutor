@@ -91,7 +91,7 @@
 
 <div   align="center"  style="width: calc(100% - 280px); float: right;">
   <h2 align= "center">Dynamic Table</h2>
-  <br>{{total_cellstobe_filled}}
+  <br>
   <h4> Please fill the first row and column first </h4>
   <h4> Please fill the matrix in the same order as shown in the tutorials</h4>
   <br>
@@ -99,25 +99,30 @@
   	<tr>
   		<th></th>
   		<th>-</th>
-  		<th ng-repeat="x in query track by $index">{{x}}</th>
+  		<th ng-repeat="x in sequence2 track by $index">{{x}}</th>
   	</tr>
 
   	<tr>
   		<td>-</td>
-  		<td>  <input type="number" name="t" size="1" value="0" style="border-style: solid;" readonly="" align="center"> </td>
-  		<td ng-repeat="x in query track by $index"> 
-  			<input type="number"  style=" border-style: solid; background-color: #ff4d4d" ng-attr-id="{{ '0' + ($index+1).toString()}}" ng-model="myVal" ng-change="MainDpChecker($index+1,0,myVal,'0'+($index+1).toString())"> 
+  		<td>  <input type="number" name="t" size="1" value="0" style="border-style: solid; background-color: white;" ng-click="Backtrackclick(0,0,myVal,'00')" id='00'  align="center"> </td>
+  		<td ng-repeat="x in sequence2 track by $index"> 
+  			<input type="number"  style=" border-style: solid; background-color: #ff4d4d" ng-attr-id="{{ '0' + ($index+1).toString()}}" ng-model="myVal" ng-change="MainDpChecker($index+1,0,myVal,'0'+($index+1).toString())"  ng-click="Backtrackclick($index+1,0,myVal,'0'+($index+1).toString())"> 
   		</td>
   	</tr>
 
-  	<tr ng-repeat="d in db track by $index">
+  	<tr ng-repeat="d in sequence1 track by $index">
   		<td><b>{{d}}</b></td>
-  		<td> <input type="number" style="border-style: solid; background-color: #ff4d4d;" ng-attr-id="{{($index+1).toString() +'0'}}" ng-change="MainDpChecker(0,$index+1,myVals,($index+1).toString()+'0')" ng-model="myVals"> </td>
-  		<td ng-repeat="x in query track by $index" align="center">
-  			<input  type="number" id="we" style="border-style: solid; background-color: #ff4d4d" ng-change= "MainDpChecker($index+1,$parent.$index+1,myVal,($parent.$index+1).toString()+($index+1).toString())" ng-attr-id="{{($parent.$index+1).toString()+($index+1).toString()}}"  ng-model="myVal"> 
+  		<td> <input type="number" style="border-style: solid; background-color: #ff4d4d;" ng-attr-id="{{($index+1).toString() +'0'}}" ng-change="MainDpChecker(0,$index+1,myVals,($index+1).toString()+'0')"  ng-click="Backtrackclick(0,$index+1,myVals,($index+1).toString()+'0')"  ng-model="myVals"> </td>
+  		<td ng-repeat="x in sequence2 track by $index" align="center">
+  			<input  type="number" id="we" style="border-style: solid; background-color: #ff4d4d" ng-change= "MainDpChecker($index+1,$parent.$index+1,myVal,($parent.$index+1).toString()+($index+1).toString())" ng-attr-id="{{($parent.$index+1).toString()+($index+1).toString()}}" ng-click="Backtrackclick($index+1,$parent.$index+1,myVal,($parent.$index+1).toString()+($index+1).toString())" 
+  			ng-model="myVal"> 
   		</td>
   	</tr>	
  </table>
+
+
+
+
 <br>
 <br>
 
@@ -128,20 +133,43 @@
 	
 
 	<br>
-	<div id = "backtracker" style="display: none;">
-	<h2 align="center"> BACK - TRACK </h2>
-	<br>
-	<h4> Please fill the values from left to right </h4>
 	
-	<br>
-	<table align= "center" style="min-height: 10px; min-width: 10px  border: 1px solid #ddd; border: 1px solid black;"  >
+	<div id="bttitle" style="display: none;">
+	<h2> Please click on the above boxes to indicate backtracking </h2>		
+	<h3> Aligned Sequences </h3>
+	</div>
+
+	<div id = "Seq1" style="display: none;">
+	<h2 align="center">  </h2>
+	<table align= "center" style="min-height: 10px; min-width: 10px ;"  >
 		<tr>
-			<td ng-repeat="x in backtrack track by $index"> <input type="number" style="border-style: solid; background-color: #ff4d4d" align="center" ng-attr-id="{{($index).toString()}}" ng-change="MainBacktrackChecker($index,mybVal,$index.toString())" ng-model="mybVal"> </td>
+			<td ng-repeat="x in backtrackprint track by $index" style="border-style: none;"> <input type="text" style="border-style: none; font-weight: bold;" align="center" ng-attr-id="{{'s1'+($index).toString()}}"  ng-model="mybVal"> </td>
 		</tr>	 
 	</table>
-	<h2 id="qry_align" style="display: none;"><b> Aligned Sequence 1: {{aligned_seq1}} </b></h2>
-	<h2 id="db_align" style="display: none;"><b> Aligned Sequence 2: {{aligned_seq2}} </b></h2>
 	</div>
+
+
+	<div id = "dash" style="display: none;">
+	<h2 align="center">  </h2>
+
+	<table align= "center" style="min-height: 10px; min-width: 10px ;"  >
+		<tr>
+			<td ng-repeat="x in backtrackprint track by $index" style="border-style: none;"> <input type="text" style="border-style: none; font-weight: bold;" align="center" ng-attr-id="{{'d'+($index).toString()}}"  ng-model="mybVal"> </td>
+		</tr>	 
+	</table>
+	</div>
+
+	<div id = "Seq2" style="display: none;">
+	<h2 align="center"> </h2>
+	
+	<table align= "center" style="min-height: 10px; min-width: 10px  ;"  >
+		<tr>
+			<td ng-repeat="x in backtrackprint track by $index" style="border-style: none;"> <input type="text" style="border-style: none; font-weight: bold;" align="center" ng-attr-id="{{'s2'+($index).toString()}}"  ng-model="mybVal"> </td>
+		</tr>	 
+	</table>
+	</div>
+
+	
 	<br>
 	<br>
 	<br>	
@@ -162,7 +190,7 @@
 
 	  	<tr ng-repeat="d in matrixchar.slice(1,matrixvals.length)">
 	  		<td><b>{{d}}</b></td>
-	  		<td ng-repeat="x in matrixvals[$index] track by $index" align="center">
+	  		<td ng-repeat="x in matrixvals[$index+1] track by $index" align="center">
 	  			<label><b>{{x}}</b></label> 
 	  		</td>
 	  	</tr>	
