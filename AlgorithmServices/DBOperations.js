@@ -126,6 +126,7 @@ app.post('/api/insertResult',function(req,res){
   		assert2.equal(null, err);
   		insertResult(db, function() {
       	db.close();
+      	res.send('inserted result!')
   		});
 
     });

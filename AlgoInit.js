@@ -1,7 +1,7 @@
 var app = angular.module("initapp", []);
 
 
-app.controller("initctrl", function($scope , $http){
+app.controller("initctrl", function($scope , $http , $window){
 
 	$scope.matrixtype = "Nucleotides";
 	var regexn = /[acgt][acgt][acgt][acgt]*/i;
@@ -330,12 +330,15 @@ app.controller("initctrl", function($scope , $http){
               data: finaljson
             }
 
-           
+            console.log($window.location.href);
 
             $http(finalreq)
-            .then(function (response) {
+            .then(function (resp) {
                 console.log('success');
-             },function (response) {
+                console.log('inserted into database!');
+                $window.location.href = './algorithms.html';
+                //window.location.assign($window.location.href);
+             },function (resp) {
              console.log('error');
             }); 
 
@@ -344,7 +347,7 @@ app.controller("initctrl", function($scope , $http){
           });	
 
         
-        //console.log($('#myform'));
+        
 
   	}
 
