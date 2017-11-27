@@ -233,7 +233,7 @@ app.controller("initctrl", function($scope , $http , $window){
 
     var matrixreq = {
         method: 'POST',
-        url: 'http://127.0.0.1:8080/api/insertMatrix',
+        url: 'http://127.0.0.1:5555/api/insertMatrix',
         headers: {
               'Content-Type': 'application/json',
               'Access-Control-Request-Headers' : '*'
