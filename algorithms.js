@@ -17,8 +17,8 @@ app.controller("matrix", function($scope,$rootScope,$http){
     $scope.chars = "";
 
     // GET THE USER QUERY SEQUENCE AND CHOICES FROM DB
-    
-    
+
+
     getuserqueryfunc();
 
     function getuserqueryfunc(){        
@@ -29,15 +29,15 @@ app.controller("matrix", function($scope,$rootScope,$http){
         }).then(function successCallback(response) {
             
             console.log(response);
-            $scope.sequence1 = response.data.sequence1;
-            $scope.sequence2 = response.data.sequence2;
-            $scope.alignment = response.data.alignmethod;
+            $scope.sequence1 = response.data.sequence1.toUpperCase();
+            $scope.sequence2 = response.data.sequence2.toUpperCase();
+            $scope.alignmethod = response.data.alignmethod;
+            $scope.aligntype = response.data.aligntype;
             $scope.matrixtype = response.data.matrixname;
             $rootScope.gappenalty = response.data.gap;
             $scope.scorematrix = response.data.scorematrix;
-
             console.log($scope.scorematrix);
-            $scope.chars = response.data.letters;
+            $scope.chars = response.data.letters.toUpperCase();
             $rootScope.backtrack = response.data.allalignments;
             $rootScope.backtrackprint = $rootScope.backtrack.slice(1,$rootScope.backtrack.length)
             $scope.backtrackprintcount = $rootScope.backtrackprint.length
@@ -80,6 +80,16 @@ app.controller("matrix", function($scope,$rootScope,$http){
 
     function initialize(){
 
+        if($scope.alignmethod=="global"){
+            $scope.dynamictable = "Needleman-Wunsch"
+        }
+        else if($scope.alignmethod=='local'){
+             $scope.dynamictable = "Smith-Waterman"
+        }
+        else
+        {
+            $scope.dynamictable = "Dove-Tail"   
+        }
 
         $scope.db = $scope.sequence1.split("")
         //$scope.query = ["a","t","g","c","a"]
@@ -90,7 +100,6 @@ app.controller("matrix", function($scope,$rootScope,$http){
         $scope.prev_row = 0;
         $scope.prev_col = 0;
         $scope.gappen = $rootScope.gappenalty
-        $scope.aligntype = $scope.alignment
         $scope.scoringmatrix = $scope.matrixtype
         $scope.matrixvals = $scope.scorematrix;
         console.log($scope.matrixvals)
@@ -157,7 +166,7 @@ app.controller("matrix", function($scope,$rootScope,$http){
                     document.getElementById("s1"+id.toString()).readOnly = true; 
                     document.getElementById("d"+id.toString()).value = '|'
                     document.getElementById("d"+id.toString()).readOnly = true; 
-                    document.getElementById("s2"+id.toString()).value = $scope.db[ $scope.prev_col-1]
+                    document.getElementById("s2"+id.toString()).value = $scope.query[ $scope.prev_col-1]
                     document.getElementById("s2"+id.toString()).readOnly = true; 
 
                     $scope.prev_row = row;
@@ -178,6 +187,7 @@ app.controller("matrix", function($scope,$rootScope,$http){
                     document.getElementById("s1"+id.toString()).value = $scope.db[ $scope.prev_row-1]
                     document.getElementById("s1"+id.toString()).readOnly = true; 
                     document.getElementById("s2"+id.toString()).value = '-';
+                    document.getElementById("d"+id.toString()).value = 'd'
                     document.getElementById("s2"+id.toString()).readOnly = true; 
                     document.getElementById("d"+id.toString()).readOnly = true; 
                     $scope.prev_row = row;
@@ -196,8 +206,9 @@ app.controller("matrix", function($scope,$rootScope,$http){
                     $scope.aligned_s2 = $scope.query[$scope.prev_col-1] + $scope.aligned_s2 
                     $scope.aligned_s1 = '-' + $scope.aligned_s1; 
                     document.getElementById("s1"+id.toString()).value = '-';
+                    document.getElementById("d"+id.toString()).value = 'i'
                     document.getElementById("s1"+id.toString()).readOnly = true; 
-                    document.getElementById("s2"+id.toString()).value = $scope.db[ $scope.prev_col-1];
+                    document.getElementById("s2"+id.toString()).value = $scope.query[$scope.prev_col-1];
                     document.getElementById("s2"+id.toString()).readOnly = true; 
                     document.getElementById("d"+id.toString()).readOnly = true; 
                     $scope.prev_row = row;
@@ -302,6 +313,24 @@ app.controller("matrix", function($scope,$rootScope,$http){
       }
 
 
+      function ScoreMatVal(row,column){
+            console.log("inside score mat val")
+           
+              console.log(row)
+               console.log(column)
+            var sequence1char = $scope.sequence1.charAt(row-1)
+            var sequence2char = $scope.sequence2.charAt(column-1)
+             console.log(sequence1char)
+             console.log(sequence2char)
+            var charslist = $scope.chars.toUpperCase().split("");
+             console.log(charslist)
+             
+            var scorematrow = charslist.indexOf(sequence1char)
+            var scorematcol = charslist.indexOf(sequence2char)
+            return $scope.scorematrix[scorematrow][scorematcol]
+      } 
+
+
       $scope.MainDpChecker = function(column,row,val,id){
         
         //alert("row:"+row+" column:"+column+" val:" +val+" id:"+id );
@@ -309,6 +338,19 @@ app.controller("matrix", function($scope,$rootScope,$http){
         //$scope.count = 0
         $rootScope.hidehint1 = true;
         $rootScope.hidehint2 = true;
+
+        $scope.horizontalleft = 0;
+        $scope.verticaltop = 0;
+        $scope.diagonalprev = 0;
+        $scope.scorematval = 0;
+        
+
+        if(row!=0 && column!=0){
+            $scope.scorematval = ScoreMatVal(row,column);
+            $scope.horizontalleft = $rootScope.result_matrix[row][column-1];
+            $scope.verticaltop = $rootScope.result_matrix[row-1][column];
+            $scope.diagonalprev = $rootScope.result_matrix[row-1][column-1];
+        }
         //$rootScope.disablebacktrack = true;
         
         console.log($scope.total_cellstobe_filled);
@@ -322,7 +364,10 @@ app.controller("matrix", function($scope,$rootScope,$http){
             $scope.count = 0;
             document.getElementById("hint1").style.display = "none";
             document.getElementById("hint2").style.display = "none";
+            document.getElementById("hint3").style.display = "none";
+
             document.getElementById(id).disabled = true;
+
             $scope.total_cellstobe_filled -= 1;
             $scope.hidehint1 = true;
             $scope.hidehint2 = true;
@@ -341,16 +386,34 @@ app.controller("matrix", function($scope,$rootScope,$http){
             $scope.count += 1;
             console.log($scope.count)
             if($scope.count == 1){
+                if(row==0 || column==0){
+                    document.getElementById("hint3").style.display = "block";
+                }
+                else{
                 document.getElementById("hint1").style.display = "block";
             }
+            }
             else if($scope.count==2){
+                if(row==0 || column==0){
+                    document.getElementById("hint3").style.display = "block";
+                }
+                else{
                 document.getElementById("hint1").style.display = "none";
                 document.getElementById("hint2").style.display = "block";   
                 $scope.hidehint1 = true;
                 $scope.hidehint2 = false;
-
+            }
             }
             else if($scope.count==3){
+                if(row==0 || column==0){
+                    document.getElementById("hint3").style.display = "block";
+                    document.getElementById(id).value = $rootScope.result_matrix[row][column];
+                    var x = document.getElementById(id);
+                    x.style.backgroundColor = "#70db70";
+                    document.getElementById(id).disabled = true;
+                    $scope.count = 0;
+                }
+                else{
                 document.getElementById("hint1").style.display = "none";
                 document.getElementById("hint2").style.display = "none";
                 console.log($rootScope.result_matrix[row][column])
@@ -363,6 +426,7 @@ app.controller("matrix", function($scope,$rootScope,$http){
                 x.style.backgroundColor = "#70db70";
                 document.getElementById(id).disabled = true;
                 $scope.count = 0;
+            }
                 //$scope.total_cellstobe_filled -= 1;
                 
             }

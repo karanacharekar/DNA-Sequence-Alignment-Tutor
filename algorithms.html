@@ -2,10 +2,13 @@
 <html lang="en">
 
 <head>
-  <title>Bootstrap Example</title>
+  <title>Sequence Alignment Tutor</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='http://fonts.googleapis.com/css?family=Great+Vibes' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
@@ -17,8 +20,8 @@
 
 <body ng-app="myAlignmentTutor" ng-controller="matrix">
 
-<div class="nav-side-menu"  >
-    <div class="brand">Configuration</div>
+<div class="nav-side-menu">
+    <div class="brand">Alignment Configuration</div>
     <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
         <div class="menu-list">
             <ul id="menu-content" class="menu-content collapse out">
@@ -45,6 +48,18 @@
 
                 <li   data-target="#product" >
                   <a href="#" style="margin-left: 10px"><i class="fa fa-gift fa-lg"></i> ALIGNMENT TYPE <span class="arrow"></span></a>
+                </li>
+                <ul  id="product">
+                   <li>
+                		<div class="form-group">
+						      <h6 ng-bind="alignmethod" style="margin-left: 10px; color: yellow"></h6>
+			   			 </div>
+			   		</li>                     
+                </ul>
+
+
+                <li   data-target="#product" >
+                  <a href="#" style="margin-left: 10px"><i class="fa fa-gift fa-lg"></i> SEQUENCE TYPE <span class="arrow"></span></a>
                 </li>
                 <ul  id="product">
                    <li>
@@ -87,14 +102,17 @@
    
 </div>
 
-
+<h4 id="topcorner"><a href="mainpage.html"> Home </a> </h2>
 
 <div   align="center"  style="width: calc(100% - 280px); float: right;">
-  <h2 align= "center">Dynamic Table</h2>
+  <h2 align= "center" id = "font"> {{dynamictable}} </h2>
   <br>
   <h4> Please fill the first row and column first </h4>
   <h4> Please fill the matrix in the same order as shown in the tutorials</h4>
   <br>
+
+
+
  <table  align= "center" style="min-height: 10px; min-width: 10px  border: 1px solid #ddd ;" >
   	<tr>
   		<th></th>
@@ -120,22 +138,21 @@
   	</tr>	
  </table>
 
-
-
-
 <br>
 <br>
 
 <div>
 
-	<h4 id= "hint1" style="display: none;"> hint 1 : Try Again </h4>
-	<h4 id= "hint2" style="display: none;"> hint 2 : Max( Horizontally left + Gap penalty, Vertically Top + Gap penalty,  Diagonally previous + value from Scoring Matrix)</h4>
+	<h4 id= "hint1" style="display: none;" > Hint 1 : Max( Horizontally left + Gap penalty, Vertically Top + Gap penalty,  Diagonally previous + value from Scoring Matrix) </h4>
+	<h4 id= "hint2" style="display: none;" > Hint 2 : Max( {{horizontalleft}} + {{gappenalty}}, {{verticaltop}} + {{gappenalty}},  {{diagonalprev}} + {{scorematval}})</h4>
+	<h4 id= "hint3" style="display: none;" > Hint 1 : Value fixed</h4>
+
 	
 
 	<br>
 	
 	<div id="bttitle" style="display: none;">
-	<h2> Please click on the above boxes to indicate backtracking </h2>		
+	<h2> Please click on the correct above boxes to indicate backtracking </h2>		
 	<h3> Aligned Sequences </h3>
 	</div>
 
@@ -169,12 +186,7 @@
 	</table>
 	</div>
 
-	
-	<br>
-	<br>
-	<br>	
-	<h2 align="center"> {{scoringmatrix}} </h2>
-	<br>
+	<h2 align="center" id="font1"> {{scoringmatrix}} </h2>
 	<table  align= "center" style="min-height: 10px; min-width: 10px  border: 1px solid #ddd; border: 1px solid black;" >
 	  	<tr>
 	  		<th></th>	
